@@ -38,7 +38,7 @@ namespace NetHub
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<NetHubContext>(options =>
-              options.UseSqlServer(Configuration.GetConnectionString("NetHubConnection")));
+              options.UseNpgsql(Configuration.GetConnectionString("NetHubConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
