@@ -8,6 +8,8 @@ namespace NetHub.Models.ViewModels
     {
         public string Title { get; set; }
         public int Year { get; set; }
+        public string Description { get; set; }
+        public string ImgPath { get; set; }
         public string Runtime { get; set; }
         public string Genre { get; set; }
         public List<Actor> Actors { get; set; }
@@ -16,6 +18,8 @@ namespace NetHub.Models.ViewModels
         {
             Title = movie.Title;
             Year = movie.Year;
+            Description = movie.Description;
+            ImgPath = movie.ImgPath;
             Runtime = getRuntime(movie);
             Genre = getGenres(movie);
             Actors = getActors(movie);
