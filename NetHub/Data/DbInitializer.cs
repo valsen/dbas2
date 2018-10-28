@@ -8,7 +8,7 @@ namespace NetHub.Models
     {
         public static void Initialize(NetHubContext context)
         {
-            //context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
             // Check for any existing data
             if (context.Movies.Any())
@@ -24,7 +24,11 @@ namespace NetHub.Models
                 new Genre{Name="Drama"},
                 new Genre{Name="Horror"},
                 new Genre{Name="Thriller"},
-                new Genre{Name="Science Fiction"}
+                new Genre{Name="Sci-Fi"},
+                new Genre{Name="Adventure"},
+                new Genre{Name="Family"},
+                new Genre{Name="Biography"},
+                new Genre{Name="History"},
             };
             foreach (Genre g in genres)
             {
@@ -82,13 +86,23 @@ namespace NetHub.Models
 
             var prodCompanies = new ProdCompany[]
             {
-                new ProdCompany{Name="Warner Bros."}
+                new ProdCompany{Name="Warner Bros."},
+                new ProdCompany{Name="Regency Enterprises"},
+                new ProdCompany{Name="River Road Entertainment"}
             };
             foreach (ProdCompany p in prodCompanies)
             {
                 context.ProdCompanies.Add(p);
             }
             context.SaveChanges();
+
+            var prodCompFor = new ProdCompanyFor[]
+            {
+                new ProdCompanyFor{ProdCompanyID=1,MovieID=1},
+                new ProdCompanyFor{ProdCompanyID=1,MovieID=2},
+                new ProdCompanyFor{ProdCompanyID=2,MovieID=3},
+                new ProdCompanyFor{ProdCompanyID=3,MovieID=3},
+            };
 
             var actors = new Actor[]
             {
@@ -113,6 +127,27 @@ namespace NetHub.Models
                 new ActsIn{ActorID=4,MovieID=2},
                 new ActsIn{ActorID=5,MovieID=3},
                 new ActsIn{ActorID=6,MovieID=3},
+            };
+
+            var directors = new Director[]
+            {
+                new Director{FirstName="Lana",LastName="Wachowski",Birthdate=new DateTime(1965, 06, 21)},
+                new Director{FirstName="Lilly",LastName="Wachowski",Birthdate=new DateTime(1967, 12, 29)},
+                new Director{FirstName="Steve",LastName="McQueen",Birthdate=new DateTime(1969, 10, 09)},
+                new Director{FirstName="Chris",LastName="Columbus",Birthdate=new DateTime(1958, 09, 10)},
+            };
+            foreach(var d in directors)
+            {
+                context.Add(d);
+            }
+            context.SaveChanges();
+
+            var directorOf = new DirectorOf[]
+            {
+                new DirectorOf{DirectorID=1,MovieID=1},
+                new DirectorOf{DirectorID=2,MovieID=1},
+                new DirectorOf{DirectorID=3,MovieID=3},
+                new DirectorOf{DirectorID=4,MovieID=2},
             };
         }
     }
