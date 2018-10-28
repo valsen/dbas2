@@ -83,6 +83,11 @@ namespace NetHub.Models
                 new GenreOf{GenreID=10,MovieID=3},
                 new GenreOf{GenreID=11,MovieID=3},
             };
+            foreach (GenreOf g in genreOf)
+            {
+                context.GenreOf.Add(g);
+            }
+            context.SaveChanges();
 
             var prodCompanies = new ProdCompany[]
             {
@@ -103,6 +108,11 @@ namespace NetHub.Models
                 new ProdCompanyFor{ProdCompanyID=2,MovieID=3},
                 new ProdCompanyFor{ProdCompanyID=3,MovieID=3},
             };
+            foreach (ProdCompanyFor p in prodCompFor)
+            {
+                context.ProdCompanyFor.Add(p);
+            }
+            context.SaveChanges();
 
             var actors = new Actor[]
             {
@@ -128,6 +138,11 @@ namespace NetHub.Models
                 new ActsIn{ActorID=5,MovieID=3},
                 new ActsIn{ActorID=6,MovieID=3},
             };
+            foreach (ActsIn a in actsIn)
+            {
+                context.ActsIn.Add(a);
+            }
+            context.SaveChanges();
 
             var directors = new Director[]
             {
@@ -149,6 +164,11 @@ namespace NetHub.Models
                 new DirectorOf{DirectorID=3,MovieID=3},
                 new DirectorOf{DirectorID=4,MovieID=2},
             };
+            foreach (DirectorOf d in directorOf)
+            {
+                context.DirectorOf.Add(d);
+            }
+            context.SaveChanges();
         }
     }
 }
