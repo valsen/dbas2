@@ -21,15 +21,17 @@ namespace NetHub.Pages
 
         public IList<MoviesVM> Movies { get; set; }
         public SelectList Genres { get; set; }
+        public SelectList Years { get; set; }
         public string SearchString { get; set; }
         public string SelectGenre { get; set; }
         public string SearchActor { get; set; }
+        public int SelectYear { get; set; }
 
         public SearchModel(NetHubContext context)
         {
             _context = context;
         }
-        public async Task OnGetAsync(string searchString, string selectGenre, string searchActor)
+        public async Task OnGetAsync(string searchString, string selectGenre, string searchActor, int selectYear)
         {
             var movies = await _context.Movies
                 .Include(x => x.DirectorOf)
@@ -63,6 +65,10 @@ namespace NetHub.Pages
                     if (!match) movies.Remove(movie);
                 }
             }
+            if (selectYear > 0)
+            {
+                movies.RemoveAll(x => x.Year != selectYear);
+            }
 
             var genres = _context.Genres
                 .OrderBy(g => g.Name)
@@ -70,9 +76,16 @@ namespace NetHub.Pages
 
             Movies = movies;
             Genres = new SelectList(await genres.ToListAsync());
+            var list = new List<int>();
+            int[] years = Enumerable
+                .Range(System.DateTime.Now.Year-100, 101)
+                .ToArray();
+            Array.Reverse(years);
+            Years = new SelectList(years);
             SearchString = searchString;
             SelectGenre = selectGenre;
             SearchActor = searchActor;
+            SelectYear = selectYear;
         }
 
         
