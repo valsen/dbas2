@@ -26,7 +26,7 @@ namespace NetHub
                 try
                 {
                     var context = services.GetRequiredService<NetHubContext>();
-                    context.Database.EnsureCreated();
+                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {
