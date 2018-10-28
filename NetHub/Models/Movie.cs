@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace NetHub.Models {
 
     public class Movie
@@ -7,5 +9,9 @@ namespace NetHub.Models {
         public int Year { get; set; }
         public string Language { get; set; }
         public int Runtime { get; set; }
+
+        public ICollection<GenreOf> GenreOf { get; set; }
+        public ICollection<DirectorOf> DirectorOf { get; set; }
+        public ICollection<ActsIn> ActsIns { get; set; }
     }
 }

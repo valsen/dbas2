@@ -1,0 +1,31 @@
+@page
+@model HistoryModel
+@using System.Text
+@using System.Collections.Generic
+@{
+    ViewData["Title"] = "My History";
+}
+<h2>Movies</h2>
+<br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Year</th>
+                <th scope="col">Runtime</th>
+                <th scope="col">Genre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Movies) {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Year</td>
+                    <td>@item.Runtime</td>
+                    <td>@item.Genre</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
