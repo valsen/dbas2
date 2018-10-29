@@ -1,6 +1,7 @@
-namespace NetHub.Models {
+namespace NetHub.Models 
+{
 
-    public class ProdCompanyFor
+    public class MovieProdcompany
     {
         public int ProdCompanyID { get; set; }
         public int MovieID { get; set; }

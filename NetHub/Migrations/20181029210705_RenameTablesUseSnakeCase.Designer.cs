@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetHub.Models;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,39 +10,16 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NetHub.Migrations
 {
     [DbContext(typeof(NetHubContext))]
-    partial class NetHubContextModelSnapshot : ModelSnapshot
+    [Migration("20181029210705_RenameTablesUseSnakeCase")]
+    partial class RenameTablesUseSnakeCase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            modelBuilder.Entity("NetHub.Models.Account", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id");
-
-                    b.Property<string>("CustNumber")
-                        .HasColumnName("cust_number");
-
-                    b.Property<DateTime>("ExpireDate")
-                        .HasColumnName("expire_date");
-
-                    b.Property<DateTime>("JoinDate")
-                        .HasColumnName("join_date");
-
-                    b.Property<int>("PayStatus")
-                        .HasColumnName("pay_status");
-
-                    b.HasKey("ID")
-                        .HasName("pk_accounts");
-
-                    b.ToTable("accounts");
-                });
 
             modelBuilder.Entity("NetHub.Models.Actor", b =>
                 {
@@ -111,9 +89,9 @@ namespace NetHub.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("ID")
-                        .HasName("pk_languages");
+                        .HasName("pk_movies_languages");
 
-                    b.ToTable("languages");
+                    b.ToTable("movies_languages");
                 });
 
             modelBuilder.Entity("NetHub.Models.Movie", b =>
@@ -210,15 +188,12 @@ namespace NetHub.Migrations
                         .HasColumnName("rating");
 
                     b.HasKey("ID")
-                        .HasName("pk_movie_histories");
-
-                    b.HasIndex("AccountID")
-                        .HasName("ix_movie_histories_account_id");
+                        .HasName("pk_movie_history");
 
                     b.HasIndex("MovieID")
-                        .HasName("ix_movie_histories_movie_id");
+                        .HasName("ix_movie_history_movie_id");
 
-                    b.ToTable("movie_histories");
+                    b.ToTable("movie_history");
                 });
 
             modelBuilder.Entity("NetHub.Models.MovieLanguage", b =>
@@ -232,9 +207,9 @@ namespace NetHub.Migrations
                     b.HasKey("MovieID", "LanguageID");
 
                     b.HasIndex("LanguageID")
-                        .HasName("ix_movies_languages_language_id");
+                        .HasName("ix_movie_language_language_id");
 
-                    b.ToTable("movies_languages");
+                    b.ToTable("movie_language");
                 });
 
             modelBuilder.Entity("NetHub.Models.MovieProdcompany", b =>
@@ -315,16 +290,10 @@ namespace NetHub.Migrations
 
             modelBuilder.Entity("NetHub.Models.MovieHistory", b =>
                 {
-                    b.HasOne("NetHub.Models.Account")
-                        .WithMany("MovieHistory")
-                        .HasForeignKey("AccountID")
-                        .HasConstraintName("fk_movie_histories_accounts_account_id")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("NetHub.Models.Movie", "Movie")
                         .WithMany("MovieHistories")
                         .HasForeignKey("MovieID")
-                        .HasConstraintName("fk_movie_histories_movies_movie_id")
+                        .HasConstraintName("fk_movie_history_movies_movie_id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -333,13 +302,13 @@ namespace NetHub.Migrations
                     b.HasOne("NetHub.Models.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageID")
-                        .HasConstraintName("fk_movies_languages_languages_language_id")
+                        .HasConstraintName("fk_movie_language_movies_languages_language_id")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("NetHub.Models.Movie", "Movie")
                         .WithMany("MoviesLanguages")
                         .HasForeignKey("MovieID")
-                        .HasConstraintName("fk_movies_languages_movies_movie_id")
+                        .HasConstraintName("fk_movie_language_movies_movie_id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

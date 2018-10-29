@@ -69,20 +69,20 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
-            var genreOf = new GenreOf[]
+            var moviesGenres = new MovieGenre[]
             {
-                new GenreOf{GenreID=1,MovieID=1},
-                new GenreOf{GenreID=7,MovieID=1},
-                new GenreOf{GenreID=2,MovieID=2},
-                new GenreOf{GenreID=8,MovieID=2},
-                new GenreOf{GenreID=9,MovieID=2},
-                new GenreOf{GenreID=4,MovieID=3},
-                new GenreOf{GenreID=10,MovieID=3},
-                new GenreOf{GenreID=11,MovieID=3},
+                new MovieGenre{GenreID=1,MovieID=1},
+                new MovieGenre{GenreID=7,MovieID=1},
+                new MovieGenre{GenreID=2,MovieID=2},
+                new MovieGenre{GenreID=8,MovieID=2},
+                new MovieGenre{GenreID=9,MovieID=2},
+                new MovieGenre{GenreID=4,MovieID=3},
+                new MovieGenre{GenreID=10,MovieID=3},
+                new MovieGenre{GenreID=11,MovieID=3},
             };
-            foreach (GenreOf g in genreOf)
+            foreach (MovieGenre g in moviesGenres)
             {
-                context.GenreOf.Add(g);
+                context.MoviesGenres.Add(g);
             }
             context.SaveChanges();
 
@@ -98,16 +98,16 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
-            var prodCompFor = new ProdCompanyFor[]
+            var moviesProdcompanies = new MovieProdcompany[]
             {
-                new ProdCompanyFor{ProdCompanyID=1,MovieID=1},
-                new ProdCompanyFor{ProdCompanyID=1,MovieID=2},
-                new ProdCompanyFor{ProdCompanyID=2,MovieID=3},
-                new ProdCompanyFor{ProdCompanyID=3,MovieID=3},
+                new MovieProdcompany{ProdCompanyID=1,MovieID=1},
+                new MovieProdcompany{ProdCompanyID=1,MovieID=2},
+                new MovieProdcompany{ProdCompanyID=2,MovieID=3},
+                new MovieProdcompany{ProdCompanyID=3,MovieID=3},
             };
-            foreach (ProdCompanyFor p in prodCompFor)
+            foreach (MovieProdcompany p in moviesProdcompanies)
             {
-                context.ProdCompanyFor.Add(p);
+                context.MoviesProdcompanies.Add(p);
             }
             context.SaveChanges();
 
@@ -126,18 +126,18 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
-            var actsIn = new ActsIn[]
+            var moviesActors = new MovieActor[]
             {
-                new ActsIn{ActorID=1,MovieID=1},
-                new ActsIn{ActorID=2,MovieID=2},
-                new ActsIn{ActorID=3,MovieID=2},
-                new ActsIn{ActorID=4,MovieID=2},
-                new ActsIn{ActorID=5,MovieID=3},
-                new ActsIn{ActorID=6,MovieID=3},
+                new MovieActor{ActorID=1,MovieID=1},
+                new MovieActor{ActorID=2,MovieID=2},
+                new MovieActor{ActorID=3,MovieID=2},
+                new MovieActor{ActorID=4,MovieID=2},
+                new MovieActor{ActorID=5,MovieID=3},
+                new MovieActor{ActorID=6,MovieID=3},
             };
-            foreach (ActsIn a in actsIn)
+            foreach (MovieActor a in moviesActors)
             {
-                context.ActsIn.Add(a);
+                context.MoviesActors.Add(a);
             }
             context.SaveChanges();
 
@@ -154,16 +154,16 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
-            var directorOf = new DirectorOf[]
+            var moviesDirectors = new MovieDirector[]
             {
-                new DirectorOf{DirectorID=1,MovieID=1},
-                new DirectorOf{DirectorID=2,MovieID=1},
-                new DirectorOf{DirectorID=3,MovieID=3},
-                new DirectorOf{DirectorID=4,MovieID=2},
+                new MovieDirector{DirectorID=1,MovieID=1},
+                new MovieDirector{DirectorID=2,MovieID=1},
+                new MovieDirector{DirectorID=3,MovieID=3},
+                new MovieDirector{DirectorID=4,MovieID=2},
             };
-            foreach (DirectorOf d in directorOf)
+            foreach (MovieDirector d in moviesDirectors)
             {
-                context.DirectorOf.Add(d);
+                context.MoviesDirectors.Add(d);
             }
             context.SaveChanges();
         }

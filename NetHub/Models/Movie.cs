@@ -11,10 +11,10 @@ namespace NetHub.Models {
         public string ImgPath { get; set; }
         public int Runtime { get; set; }
 
-        public ICollection<GenreOf> GenreOf { get; set; }
-        public ICollection<MovieLanguage> MovieLanguages { get; set; }
-        public ICollection<DirectorOf> DirectorOf { get; set; }
-        public ICollection<ActsIn> ActsIns { get; set; }
-        public ICollection<MovieHistory> MovieHistory { get; set; }
+        public ICollection<MovieGenre> MoviesGenres { get; set; }
+        public ICollection<MovieLanguage> MoviesLanguages { get; set; }
+        public ICollection<MovieDirector> MoviesDirectors { get; set; }
+        public ICollection<MovieActor> MoviesActors { get; set; }
+        public ICollection<MovieHistory> MovieHistories { get; set; }
     }
 }

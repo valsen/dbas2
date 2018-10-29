@@ -1,6 +1,6 @@
 namespace NetHub.Models {
 
-    public class ActsIn
+    public class MovieActor
     {
         public int ActorID { get; set; }
         public int MovieID { get; set; }

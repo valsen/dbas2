@@ -34,10 +34,10 @@ namespace NetHub.Pages
         public async Task OnGetAsync(string searchString, string selectGenre, string searchActor, int selectYear)
         {
             var movies = await _context.Movies
-                .Include(x => x.DirectorOf)
-                .Include(x => x.ActsIns)
+                .Include(x => x.MoviesDirectors)
+                .Include(x => x.MoviesActors)
                     .ThenInclude(x => x.Actor)
-                .Include(x => x.GenreOf)
+                .Include(x => x.MoviesGenres)
                     .ThenInclude(x => x.Genre)
                 .OrderBy(x => x.Title)
                 .Select(x => new MoviesVM(x))

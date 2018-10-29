@@ -30,9 +30,9 @@ namespace NetHub.Models.ViewModels
             var genreList = new List<string>();
             StringBuilder genres = new StringBuilder();
             string prefix = "";
-            if (movie.GenreOf != null) {
-                foreach (var genreOf in movie.GenreOf) {
-                    genreList.Add(genreOf.Genre.Name);
+            if (movie.MoviesGenres != null) {
+                foreach (var g in movie.MoviesGenres) {
+                    genreList.Add(g.Genre.Name);
                 }
                 genreList.Sort();
                 foreach (var genre in genreList) {
@@ -47,7 +47,7 @@ namespace NetHub.Models.ViewModels
         private List<Actor> getActors(Movie m)
         {
             var actors = new List<Actor>();
-            foreach (var entry in m.ActsIns)
+            foreach (var entry in m.MoviesActors)
             {
                 actors.Add(entry.Actor);
             }
