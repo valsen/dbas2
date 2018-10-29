@@ -44,7 +44,6 @@ namespace NetHub.Models
                     Year=1999,
                     Description="A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
                     ImgPath="images/thematrix.jpg",
-                    Language="English",
                     Runtime=136
                 },
                 new Movie
@@ -53,7 +52,6 @@ namespace NetHub.Models
                     Year=2002,
                     Description="An ancient prophecy seems to be coming true when a mysterious presence begins stalking the corridors of a school of magic and leaving its victims paralyzed.",
                     ImgPath="images/harrypotterandthechamberofsecrets.jpg",
-                    Language="English",
                     Runtime=161
                 },
                 new Movie
@@ -62,7 +60,6 @@ namespace NetHub.Models
                     Year=2013,
                     Description="In the antebellum United States, Solomon Northup, a free black man from upstate New York, is abducted and sold into slavery.",
                     ImgPath="images/12yearsaslave.jpg",
-                    Language="English",
                     Runtime=134
                 }
             };

@@ -17,6 +17,6 @@ namespace NetHub.Pages
 {
     public class HistoryModel : PageModel
     {
-        public IList<MovieHistoryVM> Watched { get; set; }
+        public IList<MovieHistory> Watched { get; set; }
     }
 }
