@@ -166,6 +166,34 @@ namespace NetHub.Models
                 context.MoviesDirectors.Add(d);
             }
             context.SaveChanges();
+
+            var languages = new Language[]
+            {
+                new Language{Name="English"},
+                new Language{Name="Swedish"},
+                new Language{Name="Spanish"},
+                new Language{Name="French"},
+                new Language{Name="Italian"},
+                new Language{Name="German"},
+                new Language{Name="Japanese"}
+            };
+            foreach (Language l in languages)
+            {
+                context.Languages.Add(l);
+            }
+            context.SaveChanges();
+
+            var moviesLanguages = new MovieLanguage[]
+            {
+                new MovieLanguage{MovieID=1,LanguageID=1},
+                new MovieLanguage{MovieID=2,LanguageID=1},
+                new MovieLanguage{MovieID=3,LanguageID=1},
+            };
+            foreach (MovieLanguage ml in moviesLanguages)
+            {
+                context.MoviesLanguages.Add(ml);
+            }
+            context.SaveChanges();
         }
     }
 }
