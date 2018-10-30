@@ -35,10 +35,13 @@ namespace NetHub.Pages
         {
             var movies = await _context.Movies
                 .Include(x => x.MoviesDirectors)
+                    .ThenInclude(x => x.Director)
                 .Include(x => x.MoviesActors)
                     .ThenInclude(x => x.Actor)
                 .Include(x => x.MoviesGenres)
                     .ThenInclude(x => x.Genre)
+                .Include(x => x.MoviesLanguages)
+                    .ThenInclude(x => x.Language)
                 .OrderBy(x => x.Title)
                 .Select(x => new MoviesVM(x))
                 .ToListAsync();

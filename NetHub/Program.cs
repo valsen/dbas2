@@ -40,6 +40,7 @@ namespace NetHub
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseUrls("http://192.168.1.40:5001")
                 .UseStartup<Startup>();
     }
 }
