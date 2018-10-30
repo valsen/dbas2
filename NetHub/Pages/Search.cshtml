@@ -16,7 +16,7 @@
     <form class="form-inline">
         <div class="form-group">
             <i class="fas fa-search"></i>
-            <input type="text" class="form-control" placeholder="movie" name="SearchString">
+            <input type="text" class="form-control" placeholder="movie" name="SearchTitle">
         </div>
         <div class="form-group">
             <select asp-for="SelectGenre" asp-items="Model.Genres" class="form-control">
@@ -63,13 +63,13 @@
                             @foreach(var a in item.Actors){
                                 numActors--;
                                 var actor = a.FirstName + " " + a.LastName;
-                                <a href="Search?SearchString=&SelectGenre=&SearchActor=@actor&SelectYear=">@actor</a>@if(numActors > 0){@comma}
+                                <a href="Search?SearchTitle=&SelectGenre=&SearchActor=@actor&SelectYear=">@actor</a>@if(numActors > 0){@comma}
                             }
                             </p>
                             @{
                                 string spacer = "   |   ";
                             }
-                            <p style="position:absolute; bottom:10px;"><a href="Search?SearchString=&SelectGenre=&SearchActor=&SelectYear=@item.Year">@item.Year</a>
+                            <p style="position:absolute; bottom:10px;"><a href="Search?SearchTitle=&SelectGenre=&SearchActor=&SelectYear=@item.Year">@item.Year</a>
                             @spacer
                             @item.Genre
                             @spacer

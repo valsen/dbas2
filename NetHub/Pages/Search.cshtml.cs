@@ -22,7 +22,7 @@ namespace NetHub.Pages
         public IList<MoviesVM> Movies { get; set; }
         public SelectList Genres { get; set; }
         public SelectList Years { get; set; }
-        public string SearchString { get; set; }
+        public string SearchTitle { get; set; }
         public string SelectGenre { get; set; }
         public string SearchActor { get; set; }
         public int SelectYear { get; set; }
@@ -31,9 +31,9 @@ namespace NetHub.Pages
         {
             _context = context;
         }
-        public async Task OnGetAsync(string searchString, string selectGenre, string searchActor, int selectYear)
+        public async Task OnGetAsync(string searchTitle, string selectGenre, string searchActor, int selectYear)
         {
-            var movies = await _context.Movies
+            var movies = _context.Movies
                 .Include(x => x.MoviesDirectors)
                     .ThenInclude(x => x.Director)
                 .Include(x => x.MoviesActors)
@@ -43,54 +43,62 @@ namespace NetHub.Pages
                 .Include(x => x.MoviesLanguages)
                     .ThenInclude(x => x.Language)
                 .OrderBy(x => x.Title)
-                .Select(x => new MoviesVM(x))
-                .ToListAsync();
-
+                .AsQueryable();
+                
             if (!String.IsNullOrEmpty(selectGenre))
             {
-                movies.RemoveAll(m => !m.Genre.ToLower().Contains(selectGenre.ToLower()));
+                movies = movies.Where(m => m.MoviesGenres.Any(x => x.Genre.Name == selectGenre));
+                    
+                // More like normal SQL
+                // movies = 
+                //     from movie in movies
+                //     join moviegenre in _context.MoviesGenres on movie.ID equals moviegenre.MovieID
+                //     join genre in _context.Genres
+                //         .Where(x => x.Name.ToLower() == selectGenre.ToLower())
+                //     on moviegenre.GenreID equals genre.ID
+                //     select movie;
             }
-            if (!String.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(searchTitle))
             {
-                movies.RemoveAll(s => !s.Title.ToLower().Contains(searchString.ToLower()));
+                movies = movies.Where(x => x.Title.ToLower().Contains(searchTitle.ToLower()));
             }
             if (!String.IsNullOrEmpty(searchActor))
             {
-                foreach(var movie in movies.ToList()){
-                    Boolean match = false;
-                    foreach(Actor actor in movie.Actors){
-                        string fullName = String.Concat(actor.FirstName, " ", actor.LastName).ToLower();
-                        if (fullName.Contains(searchActor.ToLower()))
-                        {
-                            match = true;
-                        }
-                    }
-                    if (!match) movies.Remove(movie);
-                }
+                movies = movies
+                    .Where(m => m.MoviesActors.Any(x => searchActor.ToLower().Contains(x.Actor.FirstName.ToLower()) 
+                                                    || searchActor.ToLower().Contains(x.Actor.LastName.ToLower())));
+
+                // More like normal SQL
+                // movies =
+                //     from movie in movies
+                //     join movieactor in _context.MoviesActors on movie.ID equals movieactor.MovieID
+                //     join actor in _context.Actors
+                //         .Where(x => searchActor.ToLower().Contains(x.FirstName.ToLower()) 
+                //                 || searchActor.ToLower().Contains(x.LastName.ToLower()))
+                //     on movieactor.ActorID equals actor.ID
+                //     select movie;
             }
             if (selectYear > 0)
             {
-                movies.RemoveAll(x => x.Year != selectYear);
+                movies = movies.Where(x => x.Year == selectYear);
             }
 
             var genres = _context.Genres
                 .OrderBy(g => g.Name)
                 .Select(g => g.Name);
 
-            Movies = movies;
-            Genres = new SelectList(await genres.ToListAsync());
-            var list = new List<int>();
             int[] years = Enumerable
                 .Range(System.DateTime.Now.Year-100, 101)
                 .ToArray();
             Array.Reverse(years);
+
+            Movies = await movies.Select(x => new MoviesVM(x)).ToListAsync();
+            Genres = new SelectList(await genres.ToListAsync());
             Years = new SelectList(years);
-            SearchString = searchString;
+            SearchTitle = searchTitle;
             SelectGenre = selectGenre;
             SearchActor = searchActor;
             SelectYear = selectYear;
         }
-
-        
     }
 }

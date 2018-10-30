@@ -8,6 +8,7 @@ namespace NetHub.Models
     {
         public static void Initialize(NetHubContext context)
         {
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             // Check for any existing data
