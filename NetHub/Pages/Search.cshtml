@@ -5,13 +5,7 @@
 @{
     ViewData["Title"] = "Search page";
 }
-<div class="row">
-    <div class="col-md-2">
-        <h2>Movies</h2>
-    </div>
-    <div class="col-md-auto">
-        <h2>TV Shows</h2>
-    </div>
+        <h2>Movies & TV-Shows</h2>
     <br />
     <form class="form-inline">
         <div class="form-group">
@@ -33,7 +27,7 @@
         </div>
         <div class="form-group">
             <select asp-for="UserId" asp-items="@(new SelectList(Model.Users,"ID","CustName"))" class="form-control">
-                <option value="">User</option>
+                <option value="">Choose User</option>
             </select>
         </div>
         @if (Model.SelectedUser != 0)
@@ -46,7 +40,6 @@
         }
         <button class="btn btn-primary" type="submit" value="Filter">Search</button>
     </form>
-</div>
     <table class="table table-striped table-hover" style="height: 100%;">
         <thead>
             <tr>
