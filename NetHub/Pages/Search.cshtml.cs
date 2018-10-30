@@ -20,18 +20,23 @@ namespace NetHub.Pages
         private readonly NetHubContext _context;
 
         public IList<MoviesVM> Movies { get; set; }
+        public IList<Account> Users { get; set; }
+        public List<SelectListItem> SelectView { get; set; }
         public SelectList Genres { get; set; }
         public SelectList Years { get; set; }
+        public int UserId { get; set; }
+        public bool History { get; set; }
         public string SearchTitle { get; set; }
-        public string SelectGenre { get; set; }
+        public string SelectedGenre { get; set; }
         public string SearchActor { get; set; }
-        public int SelectYear { get; set; }
+        public int SelectedYear { get; set; }
+        public int SelectedUser { get; set; }
 
         public SearchModel(NetHubContext context)
         {
             _context = context;
         }
-        public async Task OnGetAsync(string searchTitle, string selectGenre, string searchActor, int selectYear)
+        public async Task OnGetAsync(string searchTitle, string selectedGenre, string searchActor, int selectedYear, int userId, bool history)
         {
             var movies = _context.Movies
                 .Include(x => x.MoviesDirectors)
@@ -42,12 +47,26 @@ namespace NetHub.Pages
                     .ThenInclude(x => x.Genre)
                 .Include(x => x.MoviesLanguages)
                     .ThenInclude(x => x.Language)
+                .Include(x => x.MovieHistories)
+                    .ThenInclude(x => x.Customer)
                 .OrderBy(x => x.Title)
                 .AsQueryable();
-                
-            if (!String.IsNullOrEmpty(selectGenre))
+
+            if (userId != 0)
             {
-                movies = movies.Where(m => m.MoviesGenres.Any(x => x.Genre.Name == selectGenre));
+                if (history)
+                {
+                    movies = movies.Where(m => m.MovieHistories.Any(x => x.Customer.ID == userId));
+                }
+                else
+                {
+                    movies = movies.Where(m => !m.MovieHistories.Any(x => x.Customer.ID == userId));
+                }
+            }
+
+            if (!String.IsNullOrEmpty(selectedGenre))
+            {
+                movies = movies.Where(m => m.MoviesGenres.Any(x => x.Genre.Name == selectedGenre));
                     
                 // More like normal SQL
                 // movies = 
@@ -78,27 +97,43 @@ namespace NetHub.Pages
                 //     on movieactor.ActorID equals actor.ID
                 //     select movie;
             }
-            if (selectYear > 0)
+            if (selectedYear > 0)
             {
-                movies = movies.Where(x => x.Year == selectYear);
+                movies = movies.Where(x => x.Year == selectedYear);
             }
 
             var genres = _context.Genres
                 .OrderBy(g => g.Name)
                 .Select(g => g.Name);
 
+            var users = _context.Accounts
+                .Select(u => u.CustName);
+            
+
             int[] years = Enumerable
                 .Range(System.DateTime.Now.Year-100, 101)
                 .ToArray();
             Array.Reverse(years);
 
+            var viewOptions = new List<SelectListItem>
+            {
+                new SelectListItem{Text="New",Value="false"},
+                new SelectListItem{Text="Watched",Value="true"}
+            };
+
+            UserId = userId;
+            Users = await _context.Accounts.ToListAsync();
             Movies = await movies.Select(x => new MoviesVM(x)).ToListAsync();
             Genres = new SelectList(await genres.ToListAsync());
             Years = new SelectList(years);
+            SelectView = viewOptions;
+
             SearchTitle = searchTitle;
-            SelectGenre = selectGenre;
+            SelectedGenre = selectedGenre;
             SearchActor = searchActor;
-            SelectYear = selectYear;
+            SelectedYear = selectedYear;
+            History = history;
+            SelectedUser = userId;
         }
     }
 }

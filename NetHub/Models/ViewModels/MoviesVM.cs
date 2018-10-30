@@ -17,6 +17,7 @@ namespace NetHub.Models.ViewModels
         public string ActorString { get; set; }
         public List<Director> Directors { get; set; }
         public string DirectorString { get; set; }
+        public List<MovieHistory> MovieHistories { get; set; }
 
         public MoviesVM(Movie movie)
         {
@@ -28,6 +29,7 @@ namespace NetHub.Models.ViewModels
             Genre = getGenreString(movie);
             Actors = new List<Actor>();
             Directors = new List<Director>();
+            MovieHistories = getMovieHistories(movie);
             getActors(movie);
             getDirectors(movie);
             LanguageString = getLanguageString(movie);
@@ -109,6 +111,20 @@ namespace NetHub.Models.ViewModels
                 }
             }
             DirectorString = directors.ToString();
+        }
+
+        private List<MovieHistory> getMovieHistories(Movie m)
+        {
+            if (m.MovieHistories != null)
+            {
+                var movieHistories = new List<MovieHistory>();
+                foreach (var h in m.MovieHistories)
+                {
+                    movieHistories.Add(h);
+                }
+                return movieHistories;
+            }
+            return null;
         }
 
         private string getRuntime(Movie movie)

@@ -19,7 +19,7 @@
             <input type="text" class="form-control" placeholder="movie" name="SearchTitle">
         </div>
         <div class="form-group">
-            <select asp-for="SelectGenre" asp-items="Model.Genres" class="form-control">
+            <select asp-for="SelectedGenre" asp-items="Model.Genres" class="form-control">
                 <option value="">Genre</option>
             </select>
         </div>
@@ -27,10 +27,23 @@
             <input type="text" class="form-control" placeholder="actor" name="SearchActor">
         </div>
         <div class="form-group">
-            <select asp-for="SelectYear" asp-items="Model.Years" class="form-control">
+            <select asp-for="SelectedYear" asp-items="Model.Years" class="form-control">
                 <option value="">Year</option>
             </select>
         </div>
+        <div class="form-group">
+            <select asp-for="UserId" asp-items="@(new SelectList(Model.Users,"ID","CustName"))" class="form-control">
+                <option value="">User</option>
+            </select>
+        </div>
+        @if (Model.SelectedUser != 0)
+        {
+            <div class="form-group">
+                <select asp-for="History" asp-items="Model.SelectView" class="form-control">
+                    
+                </select>
+            </div>
+        }
         <button class="btn btn-primary" type="submit" value="Filter">Search</button>
     </form>
 </div>
@@ -67,6 +80,20 @@
                             }
                             </p>
                             @{
+                                if (item.MovieHistories != null)
+                                {
+                                    foreach (var mh in item.MovieHistories)
+                                    {
+                                        if (mh.AccountID == Model.SelectedUser)
+                                        {
+                                            <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating</p>
+
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            @{
                                 string spacer = "   |   ";
                             }
                             <p style="position:absolute; bottom:10px;"><a href="Search?SearchTitle=&SelectGenre=&SearchActor=&SelectYear=@item.Year">@item.Year</a>
@@ -75,7 +102,8 @@
                             @spacer
                             @item.Runtime
                             @spacer
-                            @item.LanguageString</p>
+                            @item.LanguageString
+                            </p>
                         </div>
                     </td>
                 </tr>

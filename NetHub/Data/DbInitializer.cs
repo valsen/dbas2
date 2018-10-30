@@ -8,7 +8,7 @@ namespace NetHub.Models
     {
         public static void Initialize(NetHubContext context)
         {
-            context.Database.EnsureDeleted();
+            //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             // Check for any existing data
@@ -193,6 +193,29 @@ namespace NetHub.Models
             foreach (MovieLanguage ml in moviesLanguages)
             {
                 context.MoviesLanguages.Add(ml);
+            }
+            context.SaveChanges();
+
+            var customers = new Account[]
+            {
+                new Account{CustName="Victor Josephson",Age=28,JoinDate=DateTime.Now.Date,PayStatus=PayStatus.Paid,ExpireDate=new DateTime(2018-12-31)},
+                new Account{CustName="Child",Age=14,JoinDate=DateTime.Now.Date,PayStatus=PayStatus.Paid,ExpireDate=new DateTime(2018-12-31)}
+            };
+            foreach (Account a in customers)
+            {
+                context.Accounts.Add(a);
+            }
+            context.SaveChanges();
+
+            var movieHistories = new MovieHistory[]
+            {
+                new MovieHistory{AccountID=1,MovieID=1,Date=DateTime.Now.Date,Rating=4},
+                new MovieHistory{AccountID=1,MovieID=3,Date=DateTime.Now.Date,Rating=5},
+                new MovieHistory{AccountID=2,MovieID=2,Date=DateTime.Now.Date,Rating=4},
+            };
+            foreach (MovieHistory mh in movieHistories)
+            {
+                context.MovieHistories.Add(mh);
             }
             context.SaveChanges();
         }

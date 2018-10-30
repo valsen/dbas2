@@ -11,6 +11,7 @@ namespace NetHub.Models
         public int MovieID { get; set; }
         public DateTime Date { get; set; }
         public int Rating { get; set; }
-        public Movie Movie { get; set; }        
+        public Movie Movie { get; set; }
+        public Account Customer { get; set; }       
     }
 }
