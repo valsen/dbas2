@@ -37,6 +37,25 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
+            var ratings = new Rating[]
+            {
+                new Rating{Name="G",AgeLimit=0},
+                new Rating{Name="PG",AgeLimit=0},
+                new Rating{Name="PG-13",AgeLimit=0},
+                new Rating{Name="R",AgeLimit=17},
+                new Rating{Name="NC-17",AgeLimit=17},
+                new Rating{Name="UNRATED",AgeLimit=0},
+                new Rating{Name="NOT RATED",AgeLimit=0},
+                new Rating{Name="7",AgeLimit=7},
+                new Rating{Name="11",AgeLimit=11},
+                new Rating{Name="15",AgeLimit=15}
+            };
+            foreach (Rating r in ratings)
+            {
+                context.Add(r);
+            }
+            context.SaveChanges();
+
             var movies = new Movie[]
             {
                 new Movie
@@ -45,7 +64,8 @@ namespace NetHub.Models
                     Year=1999,
                     Description="A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
                     ImgPath="images/thematrix.jpg",
-                    Runtime=136
+                    Runtime=136,
+                    RatingID=4
                 },
                 new Movie
                 {
@@ -53,7 +73,8 @@ namespace NetHub.Models
                     Year=2002,
                     Description="An ancient prophecy seems to be coming true when a mysterious presence begins stalking the corridors of a school of magic and leaving its victims paralyzed.",
                     ImgPath="images/harrypotterandthechamberofsecrets.jpg",
-                    Runtime=161
+                    Runtime=161,
+                    RatingID=2
                 },
                 new Movie
                 {
@@ -61,7 +82,8 @@ namespace NetHub.Models
                     Year=2013,
                     Description="In the antebellum United States, Solomon Northup, a free black man from upstate New York, is abducted and sold into slavery.",
                     ImgPath="images/12yearsaslave.jpg",
-                    Runtime=134
+                    Runtime=134,
+                    RatingID=4
                 }
             };
             foreach (Movie m in movies)

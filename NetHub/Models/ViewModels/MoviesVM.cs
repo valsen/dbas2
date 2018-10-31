@@ -12,6 +12,7 @@ namespace NetHub.Models.ViewModels
         public string ImgPath { get; set; }
         public string Runtime { get; set; }
         public string Genre { get; set; }
+        public string Rating { get; set; }
         public string LanguageString { get; set; }
         public List<Actor> Actors { get; set; }
         public string ActorString { get; set; }
@@ -27,6 +28,7 @@ namespace NetHub.Models.ViewModels
             ImgPath = movie.ImgPath;
             Runtime = getRuntime(movie);
             Genre = getGenreString(movie);
+            Rating = movie.Rating.Name;
             Actors = new List<Actor>();
             Directors = new List<Director>();
             MovieHistories = getMovieHistories(movie);

@@ -18,6 +18,7 @@ namespace NetHub.Models
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
         public DbSet<MovieActor> MoviesActors { get; set; }
         public DbSet<MovieDirector> MoviesDirectors { get; set; }
         public DbSet<MovieGenre> MoviesGenres { get; set; }

@@ -39,6 +39,7 @@ namespace NetHub.Pages
         public async Task OnGetAsync(string searchTitle, string selectedGenre, string searchActor, int selectedYear, int userId, bool history)
         {
             var movies = _context.Movies
+                .Include(x => x.Rating)
                 .Include(x => x.MoviesDirectors)
                     .ThenInclude(x => x.Director)
                 .Include(x => x.MoviesActors)
@@ -54,6 +55,9 @@ namespace NetHub.Pages
 
             if (userId != 0)
             {
+                var user = _context.Accounts.FirstOrDefault(x => x.ID == userId);
+                movies = movies.Where(x => x.Rating.AgeLimit <= user.Age);
+                
                 if (history)
                 {
                     movies = movies.Where(m => m.MovieHistories.Any(x => x.Customer.ID == userId));

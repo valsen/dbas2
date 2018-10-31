@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetHub.Models;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NetHub.Migrations
 {
     [DbContext(typeof(NetHubContext))]
-    partial class NetHubContextModelSnapshot : ModelSnapshot
+    [Migration("20181031143727_AddMPAARating")]
+    partial class AddMPAARating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,16 +285,13 @@ namespace NetHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id");
 
-                    b.Property<int>("AgeLimit")
-                        .HasColumnName("age_limit");
-
                     b.Property<string>("Name")
                         .HasColumnName("name");
 
                     b.HasKey("ID")
-                        .HasName("pk_ratings");
+                        .HasName("pk_rating");
 
-                    b.ToTable("ratings");
+                    b.ToTable("rating");
                 });
 
             modelBuilder.Entity("NetHub.Models.Movie", b =>
@@ -300,7 +299,7 @@ namespace NetHub.Migrations
                     b.HasOne("NetHub.Models.Rating", "Rating")
                         .WithMany()
                         .HasForeignKey("RatingID")
-                        .HasConstraintName("fk_movies_ratings_rating_id")
+                        .HasConstraintName("fk_movies_rating_rating_id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
