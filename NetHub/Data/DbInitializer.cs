@@ -37,6 +37,7 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
+
             var ratings = new Rating[]
             {
                 new Rating{Name="G",AgeLimit=0},
@@ -56,58 +57,95 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
-            var movies = new Movie[]
+            var media = new Medium[]
             {
-                new Movie
+                new Medium
                 {
                     Title="The Matrix",
                     Year=1999,
                     Description="A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
                     ImgPath="images/thematrix.jpg",
-                    Runtime=136,
-                    RatingID=4
+                    //Runtime=136,
+                    RatingID=4        
                 },
-                new Movie
+                new Medium
                 {
                     Title="Harry Potter and the Chamber of Secrets",
                     Year=2002,
                     Description="An ancient prophecy seems to be coming true when a mysterious presence begins stalking the corridors of a school of magic and leaving its victims paralyzed.",
                     ImgPath="images/harrypotterandthechamberofsecrets.jpg",
-                    Runtime=161,
+                    //Runtime=161,
                     RatingID=2
                 },
-                new Movie
+                new Medium
                 {
                     Title="12 Years a Slave",
                     Year=2013,
                     Description="In the antebellum United States, Solomon Northup, a free black man from upstate New York, is abducted and sold into slavery.",
                     ImgPath="images/12yearsaslave.jpg",
-                    Runtime=134,
+                    //Runtime=134,
                     RatingID=4
                 }
             };
-            foreach (Movie m in movies)
+            foreach (Medium m in media)
             {
-                context.Movies.Add(m);
+                context.Media.Add(m);
             }
             context.SaveChanges();
 
-            var moviesGenres = new MovieGenre[]
+            // var movies = new Movie[]
+            // {
+            //     new Movie
+            //     {
+            //         Title="The Matrix",
+            //         Year=1999,
+            //         Description="A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
+            //         ImgPath="images/thematrix.jpg",
+            //         Runtime=136,
+            //         RatingID=4
+            //     },
+            //     new Movie
+            //     {
+            //         Title="Harry Potter and the Chamber of Secrets",
+            //         Year=2002,
+            //         Description="An ancient prophecy seems to be coming true when a mysterious presence begins stalking the corridors of a school of magic and leaving its victims paralyzed.",
+            //         ImgPath="images/harrypotterandthechamberofsecrets.jpg",
+            //         Runtime=161,
+            //         RatingID=2
+            //     },
+            //     new Movie
+            //     {
+            //         Title="12 Years a Slave",
+            //         Year=2013,
+            //         Description="In the antebellum United States, Solomon Northup, a free black man from upstate New York, is abducted and sold into slavery.",
+            //         ImgPath="images/12yearsaslave.jpg",
+            //         Runtime=134,
+            //         RatingID=4
+            //     }
+            // };
+            // foreach (Movie m in movies)
+            // {
+            //     context.Movies.Add(m);
+            // }
+            // context.SaveChanges();
+
+            var moviesGenres = new MediaGenre[]
             {
-                new MovieGenre{GenreID=1,MovieID=1},
-                new MovieGenre{GenreID=7,MovieID=1},
-                new MovieGenre{GenreID=2,MovieID=2},
-                new MovieGenre{GenreID=8,MovieID=2},
-                new MovieGenre{GenreID=9,MovieID=2},
-                new MovieGenre{GenreID=4,MovieID=3},
-                new MovieGenre{GenreID=10,MovieID=3},
-                new MovieGenre{GenreID=11,MovieID=3},
+                new MediaGenre{GenreID=1,MediaID=1},
+                new MediaGenre{GenreID=7,MediaID=1},
+                new MediaGenre{GenreID=2,MediaID=2},
+                new MediaGenre{GenreID=8,MediaID=2},
+                new MediaGenre{GenreID=9,MediaID=2},
+                new MediaGenre{GenreID=4,MediaID=3},
+                new MediaGenre{GenreID=10,MediaID=3},
+                new MediaGenre{GenreID=11,MediaID=3},
             };
-            foreach (MovieGenre g in moviesGenres)
+            foreach (MediaGenre g in moviesGenres)
             {
                 context.MoviesGenres.Add(g);
             }
             context.SaveChanges();
+
 
             var prodCompanies = new ProdCompany[]
             {
@@ -121,14 +159,14 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
-            var moviesProdcompanies = new MovieProdcompany[]
+            var moviesProdcompanies = new MediaProdcompany[]
             {
-                new MovieProdcompany{ProdCompanyID=1,MovieID=1},
-                new MovieProdcompany{ProdCompanyID=1,MovieID=2},
-                new MovieProdcompany{ProdCompanyID=2,MovieID=3},
-                new MovieProdcompany{ProdCompanyID=3,MovieID=3},
+                new MediaProdcompany{ProdCompanyID=1,MediaID=1},
+                new MediaProdcompany{ProdCompanyID=1,MediaID=2},
+                new MediaProdcompany{ProdCompanyID=2,MediaID=3},
+                new MediaProdcompany{ProdCompanyID=3,MediaID=3},
             };
-            foreach (MovieProdcompany p in moviesProdcompanies)
+            foreach (MediaProdcompany p in moviesProdcompanies)
             {
                 context.MoviesProdcompanies.Add(p);
             }
@@ -149,16 +187,16 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
-            var moviesActors = new MovieActor[]
+            var moviesActors = new MediaActor[]
             {
-                new MovieActor{ActorID=1,MovieID=1},
-                new MovieActor{ActorID=2,MovieID=2},
-                new MovieActor{ActorID=3,MovieID=2},
-                new MovieActor{ActorID=4,MovieID=2},
-                new MovieActor{ActorID=5,MovieID=3},
-                new MovieActor{ActorID=6,MovieID=3},
+                new MediaActor{ActorID=1,MediaID=1},
+                new MediaActor{ActorID=2,MediaID=2},
+                new MediaActor{ActorID=3,MediaID=2},
+                new MediaActor{ActorID=4,MediaID=2},
+                new MediaActor{ActorID=5,MediaID=3},
+                new MediaActor{ActorID=6,MediaID=3},
             };
-            foreach (MovieActor a in moviesActors)
+            foreach (MediaActor a in moviesActors)
             {
                 context.MoviesActors.Add(a);
             }
@@ -177,14 +215,14 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
-            var moviesDirectors = new MovieDirector[]
+            var moviesDirectors = new MediaDirector[]
             {
-                new MovieDirector{DirectorID=1,MovieID=1},
-                new MovieDirector{DirectorID=2,MovieID=1},
-                new MovieDirector{DirectorID=3,MovieID=3},
-                new MovieDirector{DirectorID=4,MovieID=2},
+                new MediaDirector{DirectorID=1,MediaID=1},
+                new MediaDirector{DirectorID=2,MediaID=1},
+                new MediaDirector{DirectorID=3,MediaID=3},
+                new MediaDirector{DirectorID=4,MediaID=2},
             };
-            foreach (MovieDirector d in moviesDirectors)
+            foreach (MediaDirector d in moviesDirectors)
             {
                 context.MoviesDirectors.Add(d);
             }
@@ -206,15 +244,27 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
-            var moviesLanguages = new MovieLanguage[]
+            var moviesLanguages = new MediaLanguage[]
             {
-                new MovieLanguage{MovieID=1,LanguageID=1},
-                new MovieLanguage{MovieID=2,LanguageID=1},
-                new MovieLanguage{MovieID=3,LanguageID=1},
+                new MediaLanguage{MediaID=1,LanguageID=1},
+                new MediaLanguage{MediaID=2,LanguageID=1},
+                new MediaLanguage{MediaID=3,LanguageID=1},
             };
-            foreach (MovieLanguage ml in moviesLanguages)
+            foreach (MediaLanguage ml in moviesLanguages)
             {
                 context.MoviesLanguages.Add(ml);
+            }
+            context.SaveChanges();
+
+            var moviesCaptions = new MediaCaptioning[]
+            {
+                new MediaCaptioning{MediaID=1,LanguageID=1},
+                new MediaCaptioning{MediaID=2,LanguageID=1},
+                new MediaCaptioning{MediaID=3,LanguageID=1}
+            };
+            foreach (MediaCaptioning m in moviesCaptions)
+            {
+                context.MoviesCaptions.Add(m);
             }
             context.SaveChanges();
 

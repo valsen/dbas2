@@ -19,7 +19,8 @@ namespace NetHub.Pages
     {
         private readonly NetHubContext _context;
 
-        public IList<MoviesVM> Movies { get; set; }
+        //public IList<MoviesVM> Movies { get; set; }
+        public IList<MediaVM> Media { get; set; }
         public IList<Account> Users { get; set; }
         public List<SelectListItem> SelectView { get; set; }
         public SelectList Genres { get; set; }
@@ -32,21 +33,22 @@ namespace NetHub.Pages
         public int SelectedYear { get; set; }
         public int SelectedUser { get; set; }
 
+        // Konstruktor
         public IndexModel(NetHubContext context)
         {
             _context = context;
         }
         public async Task OnGetAsync(string searchTitle, string selectedGenre, string searchActor, int selectedYear, int userId, bool history)
         {
-            var movies = _context.Movies
+            var media = _context.Media
                 .Include(x => x.Rating)
-                .Include(x => x.MoviesDirectors)
+                .Include(x => x.MediaDirectors)
                     .ThenInclude(x => x.Director)
-                .Include(x => x.MoviesActors)
+                .Include(x => x.MediaActors)
                     .ThenInclude(x => x.Actor)
-                .Include(x => x.MoviesGenres)
+                .Include(x => x.MediaGenres)
                     .ThenInclude(x => x.Genre)
-                .Include(x => x.MoviesLanguages)
+                .Include(x => x.MediaLanguages)
                     .ThenInclude(x => x.Language)
                 .Include(x => x.MovieHistories)
                     .ThenInclude(x => x.Customer)
@@ -56,21 +58,21 @@ namespace NetHub.Pages
             if (userId != 0)
             {
                 var user = _context.Accounts.FirstOrDefault(x => x.ID == userId);
-                movies = movies.Where(x => x.Rating.AgeLimit <= user.Age);
+                media = media.Where(x => x.Rating.AgeLimit <= user.Age);
                 
                 if (history)
                 {
-                    movies = movies.Where(m => m.MovieHistories.Any(x => x.Customer.ID == userId));
+                    media = media.Where(m => m.MovieHistories.Any(x => x.Customer.ID == userId));
                 }
                 else
                 {
-                    movies = movies.Where(m => !m.MovieHistories.Any(x => x.Customer.ID == userId));
+                    media = media.Where(m => !m.MovieHistories.Any(x => x.Customer.ID == userId));
                 }
             }
 
             if (!String.IsNullOrEmpty(selectedGenre))
             {
-                movies = movies.Where(m => m.MoviesGenres.Any(x => x.Genre.Name == selectedGenre));
+                media = media.Where(m => m.MediaGenres.Any(x => x.Genre.Name == selectedGenre));
                     
                 // More like normal SQL
                 // movies = 
@@ -83,12 +85,12 @@ namespace NetHub.Pages
             }
             if (!String.IsNullOrEmpty(searchTitle))
             {
-                movies = movies.Where(x => x.Title.ToLower().Contains(searchTitle.ToLower()));
+                media = media.Where(x => x.Title.ToLower().Contains(searchTitle.ToLower()));
             }
             if (!String.IsNullOrEmpty(searchActor))
             {
-                movies = movies
-                    .Where(m => m.MoviesActors.Any(x => searchActor.ToLower().Contains(x.Actor.FirstName.ToLower()) 
+                media = media
+                    .Where(m => m.MediaActors.Any(x => searchActor.ToLower().Contains(x.Actor.FirstName.ToLower()) 
                                                     || searchActor.ToLower().Contains(x.Actor.LastName.ToLower())));
 
                 // More like normal SQL
@@ -103,7 +105,7 @@ namespace NetHub.Pages
             }
             if (selectedYear > 0)
             {
-                movies = movies.Where(x => x.Year == selectedYear);
+                media = media.Where(x => x.Year == selectedYear);
             }
 
             var genres = _context.Genres
@@ -127,7 +129,8 @@ namespace NetHub.Pages
 
             UserId = userId;
             Users = await _context.Accounts.ToListAsync();
-            Movies = await movies.Select(x => new MoviesVM(x)).ToListAsync();
+            //Movies = await media.Select(x => new MoviesVM(x)).ToListAsync();
+            Media = await media.Select(x => new MediaVM(x)).ToListAsync();
             Genres = new SelectList(await genres.ToListAsync());
             Years = new SelectList(years);
             SelectView = viewOptions;

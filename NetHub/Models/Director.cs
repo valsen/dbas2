@@ -10,6 +10,6 @@ namespace NetHub.Models {
         public string LastName { get; set; }
         public DateTime Birthdate { get; set; }
 
-        public ICollection<MovieDirector> MoviesDirectors { get; set; }
+        public ICollection<MediaDirector> MoviesDirectors { get; set; }
     }
 }
