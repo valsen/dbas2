@@ -144,11 +144,9 @@ namespace NetHub.Pages
             UserId = userId;
             Users = await _context.Accounts.ToListAsync();
 
-            Movies = await movies
-                
-                .Select(x => new MoviesVM(x)).ToListAsync();
-
-            Series = await series.Select(x => new SeriesVM(x))).ToListAsync();
+            Movies = await movies.Select(x => new MoviesVM(x)).ToListAsync();
+            Series = await series.Select(x => new SeriesVM(x)).ToListAsync();
+            
             Entries = new List<object>();
             foreach (var m in Movies)
             {

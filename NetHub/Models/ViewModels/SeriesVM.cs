@@ -15,35 +15,28 @@ namespace NetHub.Models.ViewModels
         public string ImgPath { get; set; }
         public List<Actor> Actors { get; set; }
         public string ActorString { get; set; }
-        public List<Director> Directors { get; set; }
         public string DirectorString { get; set; }
         public Boolean Complete { get; set; }
-        public string Runtime { get; set; }
-        public List<History> History { get; set; }
-        public SeriesVM(Movie movie)
+        public SeriesVM(Series series)
         {
-            Title = movie.Medium.Title;
-            Year = movie.Year;
-            Description = movie.Medium.Description;
-            ImgPath = movie.ImgPath;
-            Runtime = getRuntime(movie);
-            Genre = getGenreString(movie);
-            Rating = movie.Rating.Name;
+            Title = series.Title;
+            Year = series.Year;
+            Description = series.Description;
+            ImgPath = series.ImgPath;
+            Genre = getGenreString(series);
+            Rating = series.Rating.Name;
             Actors = new List<Actor>();
-            Directors = new List<Director>();
-            History = getHistory(movie);
-            getActors(movie);
-            getDirectors(movie);
-            LanguageString = getLanguageString(movie);
+            getActors(series);
+            LanguageString = getLanguageString(series);
         }
 
-        private string getGenreString(Movie movie)
+        private string getGenreString(Series series)
         {
             var genreList = new List<string>();
             StringBuilder genres = new StringBuilder();
             string prefix = "";
-            if (movie.SeriesGenres != null) {
-                foreach (var g in movie.SeriesGenres) {
+            if (series.SeriesGenres != null) {
+                foreach (var g in series.SeriesGenres) {
                     genreList.Add(g.Genre.Name);
                 }
                 genreList.Sort();
@@ -56,13 +49,13 @@ namespace NetHub.Models.ViewModels
             return genres.ToString();
         } 
 
-        private string getLanguageString(Movie movie)
+        private string getLanguageString(Series series)
         {
             var languageList = new List<string>();
             StringBuilder languages = new StringBuilder();
             string prefix = "";
-            if (movie.SeriesLanguages != null) {
-                foreach (var l in movie.SeriesLanguages) {
+            if (series.SeriesLanguages != null) {
+                foreach (var l in series.SeriesLanguages) {
                     languageList.Add(l.Language.Name);
                 }
                 languageList.Sort();
@@ -75,13 +68,13 @@ namespace NetHub.Models.ViewModels
             return languages.ToString();
         }
 
-        private void getActors(Movie m)
+        private void getActors(Series s)
         {
             var actorList = new List<string>();
             StringBuilder actors = new StringBuilder();
             string prefix = "";
-            if (m.SeriesActors != null) {
-                foreach (var a in m.SeriesActors) {
+            if (s.SeriesActors != null) {
+                foreach (var a in s.SeriesActors) {
                     Actors.Add(a.Actor);
                     actorList.Add(a.Actor.FirstName + " " + a.Actor.LastName);
                 }
@@ -93,45 +86,6 @@ namespace NetHub.Models.ViewModels
                 }
             }
             ActorString = actors.ToString();
-        }
-
-        private void getDirectors(Movie m)
-        {
-            var directorList = new List<string>();
-            StringBuilder directors = new StringBuilder();
-            string prefix = "";
-            if (m.Medium.MediaDirectors != null) {
-                foreach (var d in m.Medium.MediaDirectors) {
-                    Directors.Add(d.Director);
-                    directorList.Add(d.Director.FirstName + " " + d.Director.LastName);
-                }
-                directorList.Sort();
-                foreach (var director in directorList) {
-                    directors.Append(prefix);
-                    prefix = ", ";
-                    directors.Append(director);
-                }
-            }
-            DirectorString = directors.ToString();
-        }
-
-        private List<History> getHistory(Movie m)
-        {
-            if (m.Medium.History != null)
-            {
-                var History = new List<History>();
-                foreach (var h in m.Medium.History)
-                {
-                    History.Add(h);
-                }
-                return History;
-            }
-            return null;
-        }
-
-        private string getRuntime(Movie movie)
-        {
-          return "" + movie.Medium.Runtime/60 + "h " + movie.Medium.Runtime%60 + "min";
         }
     }
 }

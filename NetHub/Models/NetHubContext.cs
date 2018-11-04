@@ -15,21 +15,28 @@ namespace NetHub.Models
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Director> Directors { get; set; }
+        public DbSet<Episode> Episodes { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<History> History { get; set; }
         public DbSet<Language> Languages { get; set; }
+        public DbSet<MediaDirector> MediaDirectors { get; set; }
         public DbSet<Medium> Media { get; set; }
         public DbSet<Movie> Movies { get; set; }
-        public DbSet<Series> Series { get; set; }
         public DbSet<Medium> Movie { get; set; }
-        public DbSet<Rating> Ratings { get; set; }
         public DbSet<MovieActor> MoviesActors { get; set; }
-        public DbSet<MediaDirector> MediaDirectors { get; set; }
-        public DbSet<MovieGenre> MovieGenres { get; set; }
-        public DbSet<History> MovieHistories { get; set; }
-        public DbSet<MovieLanguage> MoviesLanguages { get; set; }
         public DbSet<MovieCaptioning> MoviesCaptions { get; set; }
+        public DbSet<MovieGenre> MoviesGenres { get; set; }
+        public DbSet<MovieLanguage> MoviesLanguages { get; set; }
         public DbSet<MovieProdcompany> MoviesProdcompanies { get; set; }
         public DbSet<ProdCompany> ProdCompanies { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
+        public DbSet<Season> Seasons { get; set; }
+        public DbSet<Series> Series { get; set; }
+        public DbSet<SeriesActor> SeriesActors { get; set; }
+        public DbSet<SeriesCaptioning> SeriesCaptions { get; set; }
+        public DbSet<SeriesGenre> SeriesGenres { get; set; }
+        public DbSet<SeriesLanguage> SeriesLanguages { get; set; }
+        public DbSet<SeriesProdcompany> SeriesProdcompanies { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

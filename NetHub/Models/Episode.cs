@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace NetHub.Models
 {
     public class Episode
     {
-        public int MediumID { get; set; }
+        [ForeignKey("Medium")]
+        public int EpisodeID { get; set; }
         public int EpisodeNum { get; set; }
         public int SeasonID {get; set; }
 
