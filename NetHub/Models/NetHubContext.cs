@@ -22,7 +22,6 @@ namespace NetHub.Models
         public DbSet<MediaDirector> MediaDirectors { get; set; }
         public DbSet<Medium> Media { get; set; }
         public DbSet<Movie> Movies { get; set; }
-        public DbSet<Medium> Movie { get; set; }
         public DbSet<MovieActor> MoviesActors { get; set; }
         public DbSet<MovieCaptioning> MoviesCaptions { get; set; }
         public DbSet<MovieGenre> MoviesGenres { get; set; }
