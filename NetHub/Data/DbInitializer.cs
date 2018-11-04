@@ -142,7 +142,7 @@ namespace NetHub.Models
             };
             foreach (MediaGenre g in moviesGenres)
             {
-                context.MoviesGenres.Add(g);
+                context.MediaGenres.Add(g);
             }
             context.SaveChanges();
 
@@ -224,7 +224,7 @@ namespace NetHub.Models
             };
             foreach (MediaDirector d in moviesDirectors)
             {
-                context.MoviesDirectors.Add(d);
+                context.MediaDirectors.Add(d);
             }
             context.SaveChanges();
 
@@ -279,13 +279,13 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
-            var movieHistories = new MovieHistory[]
+            var movieHistories = new History[]
             {
-                new MovieHistory{AccountID=1,MovieID=1,Date=DateTime.Now.Date,Rating=4},
-                new MovieHistory{AccountID=1,MovieID=3,Date=DateTime.Now.Date,Rating=5},
-                new MovieHistory{AccountID=2,MovieID=2,Date=DateTime.Now.Date,Rating=4},
+                new History{AccountID=1,MediumID=1,Date=DateTime.Now.Date,Rating=4},
+                new History{AccountID=1,MediumID=3,Date=DateTime.Now.Date,Rating=5},
+                new History{AccountID=2,MediumID=2,Date=DateTime.Now.Date,Rating=4},
             };
-            foreach (MovieHistory mh in movieHistories)
+            foreach (History mh in movieHistories)
             {
                 context.MovieHistories.Add(mh);
             }

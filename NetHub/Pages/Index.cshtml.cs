@@ -19,8 +19,9 @@ namespace NetHub.Pages
     {
         private readonly NetHubContext _context;
 
-        //public IList<MoviesVM> Movies { get; set; }
-        public IList<MediaVM> Media { get; set; }
+        public IList<dynamic> Entries { get; set; }
+        public IList<MoviesVM> Movies { get; set; }
+        public IList<SeriesVM> Series { get; set; }
         public IList<Account> Users { get; set; }
         public List<SelectListItem> SelectView { get; set; }
         public SelectList Genres { get; set; }
@@ -40,39 +41,51 @@ namespace NetHub.Pages
         }
         public async Task OnGetAsync(string searchTitle, string selectedGenre, string searchActor, int selectedYear, int userId, bool history)
         {
-            var media = _context.Media
-                .Include(x => x.Rating)
-                .Include(x => x.MediaDirectors)
-                    .ThenInclude(x => x.Director)
-                .Include(x => x.MediaActors)
+            var movies = _context.Movies
+                .Include(x => x.Medium)
+                    .ThenInclude(x => x.MediaDirectors)
+                        .ThenInclude(x => x.Director)
+                .Include(x => x.Medium)
+                    .ThenInclude(x => x.History)
+                        .ThenInclude(x => x.Customer)
+                .Include(x => x.MoviesActors)
                     .ThenInclude(x => x.Actor)
-                .Include(x => x.MediaGenres)
+                .Include(x => x.MoviesGenres)
                     .ThenInclude(x => x.Genre)
-                .Include(x => x.MediaLanguages)
+                .Include(x => x.MoviesLanguages)
                     .ThenInclude(x => x.Language)
-                .Include(x => x.MovieHistories)
-                    .ThenInclude(x => x.Customer)
+                .Include(x => x.MoviesCaptionings)
+                    .ThenInclude(x => x.Language)
+                .Include(x => x.MoviesProdCompanies)
+                    .ThenInclude(x => x.ProdCompany)
+                
+                .OrderBy(x => x.Medium.Title)
+                .AsQueryable();
+
+            var series = _context.Series
+                .Include(x => x.Seasons)
+                    .ThenInclude(x => x.Episodes)
                 .OrderBy(x => x.Title)
                 .AsQueryable();
 
             if (userId != 0)
             {
                 var user = _context.Accounts.FirstOrDefault(x => x.ID == userId);
-                media = media.Where(x => x.Rating.AgeLimit <= user.Age);
+                movies = movies.Where(x => x.Rating.AgeLimit <= user.Age);
                 
                 if (history)
                 {
-                    media = media.Where(m => m.MovieHistories.Any(x => x.Customer.ID == userId));
+                    movies = movies.Where(m => m.Medium.History.Any(x => x.Customer.ID == userId));
                 }
                 else
                 {
-                    media = media.Where(m => !m.MovieHistories.Any(x => x.Customer.ID == userId));
+                    movies = movies.Where(m => !m.Medium.History.Any(x => x.Customer.ID == userId));
                 }
             }
 
             if (!String.IsNullOrEmpty(selectedGenre))
             {
-                media = media.Where(m => m.MediaGenres.Any(x => x.Genre.Name == selectedGenre));
+                movies = movies.Where(m => m.MoviesGenres.Any(x => x.Genre.Name == selectedGenre));
                     
                 // More like normal SQL
                 // movies = 
@@ -85,12 +98,12 @@ namespace NetHub.Pages
             }
             if (!String.IsNullOrEmpty(searchTitle))
             {
-                media = media.Where(x => x.Title.ToLower().Contains(searchTitle.ToLower()));
+                movies = movies.Where(x => x.Medium.Title.ToLower().Contains(searchTitle.ToLower()));
             }
             if (!String.IsNullOrEmpty(searchActor))
             {
-                media = media
-                    .Where(m => m.MediaActors.Any(x => searchActor.ToLower().Contains(x.Actor.FirstName.ToLower()) 
+                movies = movies
+                    .Where(m => m.MoviesActors.Any(x => searchActor.ToLower().Contains(x.Actor.FirstName.ToLower()) 
                                                     || searchActor.ToLower().Contains(x.Actor.LastName.ToLower())));
 
                 // More like normal SQL
@@ -105,7 +118,7 @@ namespace NetHub.Pages
             }
             if (selectedYear > 0)
             {
-                media = media.Where(x => x.Year == selectedYear);
+                movies = movies.Where(x => x.Year == selectedYear);
             }
 
             var genres = _context.Genres
@@ -127,10 +140,26 @@ namespace NetHub.Pages
                 new SelectListItem{Text="Watched",Value="true"}
             };
 
+
             UserId = userId;
             Users = await _context.Accounts.ToListAsync();
-            //Movies = await media.Select(x => new MoviesVM(x)).ToListAsync();
-            Media = await media.Select(x => new MediaVM(x)).ToListAsync();
+
+            Movies = await movies
+                
+                .Select(x => new MoviesVM(x)).ToListAsync();
+
+            Series = await series.Select(x => new SeriesVM(x))).ToListAsync();
+            Entries = new List<object>();
+            foreach (var m in Movies)
+            {
+                Entries.Add(m);
+            }
+            foreach (var s in Series)
+            {
+                Entries.Add(s);
+            }
+            Entries.OrderBy(x => x.Title);
+
             Genres = new SelectList(await genres.ToListAsync());
             Years = new SelectList(years);
             SelectView = viewOptions;

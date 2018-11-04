@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 namespace NetHub.Models
 {
-    public class MovieHistory
+    public class History
     {
         public int ID { get; set; }
         public int AccountID { get; set; }
-        public int MovieID { get; set; }
+        public int MediumID { get; set; }
         public DateTime Date { get; set; }
         public int Rating { get; set; }
-        public Movie Movie { get; set; }
+        public Medium Medium { get; set; }
         public Account Customer { get; set; }       
     }
 }

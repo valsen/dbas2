@@ -17,16 +17,18 @@ namespace NetHub.Models
         public DbSet<Director> Directors { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Language> Languages { get; set; }
-        public DbSet<Movie> Movies { get; set; }
         public DbSet<Medium> Media { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Series> Series { get; set; }
+        public DbSet<Medium> Movie { get; set; }
         public DbSet<Rating> Ratings { get; set; }
-        public DbSet<MediaActor> MoviesActors { get; set; }
-        public DbSet<MediaDirector> MoviesDirectors { get; set; }
-        public DbSet<MediaGenre> MoviesGenres { get; set; }
-        public DbSet<MovieHistory> MovieHistories { get; set; }
-        public DbSet<MediaLanguage> MoviesLanguages { get; set; }
-        public DbSet<MediaCaptioning> MoviesCaptions { get; set; }
-        public DbSet<MediaProdcompany> MoviesProdcompanies { get; set; }
+        public DbSet<MovieActor> MoviesActors { get; set; }
+        public DbSet<MediaDirector> MediaDirectors { get; set; }
+        public DbSet<MovieGenre> MovieGenres { get; set; }
+        public DbSet<History> MovieHistories { get; set; }
+        public DbSet<MovieLanguage> MoviesLanguages { get; set; }
+        public DbSet<MovieCaptioning> MoviesCaptions { get; set; }
+        public DbSet<MovieProdcompany> MoviesProdcompanies { get; set; }
         public DbSet<ProdCompany> ProdCompanies { get; set; }
 
 
@@ -34,23 +36,38 @@ namespace NetHub.Models
         {
             modelBuilder.NamesToSnakeCase();
 
-            modelBuilder.Entity<MediaGenre>()
-                .HasKey(g => new { g.MediaID, g.GenreID });
+            modelBuilder.Entity<MovieGenre>()
+                .HasKey(g => new { g.MovieID, g.GenreID });
 
-            modelBuilder.Entity<MediaActor>()
-                .HasKey(a => new { a.MediaID, a.ActorID });
+            modelBuilder.Entity<SeriesGenre>()
+                .HasKey(g => new { g.SeriesID, g.GenreID });
+
+            modelBuilder.Entity<MovieActor>()
+                .HasKey(a => new { a.MovieID, a.ActorID });
+
+            modelBuilder.Entity<SeriesActor>()
+                .HasKey(a => new { a.SeriesID, a.ActorID });
 
             modelBuilder.Entity<MediaDirector>()
                 .HasKey(d => new { d.MediaID, d.DirectorID });
 
-            modelBuilder.Entity<MediaLanguage>()
-                .HasKey(l => new { l.MediaID, l.LanguageID });
+            modelBuilder.Entity<MovieLanguage>()
+                .HasKey(l => new { l.MovieID, l.LanguageID });
 
-            modelBuilder.Entity<MediaCaptioning>()
-                .HasKey(c => new { c.MediaID, c.LanguageID });
+            modelBuilder.Entity<SeriesLanguage>()
+                .HasKey(l => new { l.SeriesID, l.LanguageID });
 
-            modelBuilder.Entity<MediaProdcompany>()
-                .HasKey(p => new { p.MediaID, p.ProdCompanyID });
+            modelBuilder.Entity<MovieCaptioning>()
+                .HasKey(c => new { c.MovieID, c.LanguageID });
+
+            modelBuilder.Entity<SeriesCaptioning>()
+                .HasKey(c => new { c.SeriesID, c.LanguageID });
+
+            modelBuilder.Entity<MovieProdcompany>()
+                .HasKey(p => new { p.MovieID, p.ProdCompanyID });
+
+            modelBuilder.Entity<SeriesProdcompany>()
+                .HasKey(p => new { p.SeriesID, p.ProdCompanyID });
         }
     }
 

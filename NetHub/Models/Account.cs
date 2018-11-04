@@ -12,7 +12,7 @@ namespace NetHub.Models
         public PayStatus PayStatus { get; set; }
         public DateTime ExpireDate { get; set; }
 
-        public ICollection<MovieHistory> MovieHistory { get; set; }
+        public ICollection<History> History { get; set; }
     }
 
     public enum PayStatus

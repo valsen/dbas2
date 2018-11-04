@@ -7,6 +7,7 @@ namespace NetHub.Models {
         public int ID { get; set; }
         public string Name { get; set; }
 
-        public ICollection<MediaGenre> MoviesGenres { get; set; }
+        public ICollection<MovieGenre> MoviesGenres { get; set; }
+        public ICollection<SeriesGenre> SeriesGenres { get; set; }
     }
 }

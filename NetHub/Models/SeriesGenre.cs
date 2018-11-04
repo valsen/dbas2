@@ -1,11 +1,11 @@
 namespace NetHub.Models {
 
-    public class MediaGenre
+    public class SeriesGenre
     {
         public int GenreID { get; set; }
-        public int MediaID { get; set; }
+        public int SeriesID { get; set; }
 
         public Genre Genre { get; set; }
-        public Medium Medium { get; set; }
+        public Series Series { get; set; }
     }
 }

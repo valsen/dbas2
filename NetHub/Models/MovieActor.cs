@@ -1,11 +1,11 @@
 namespace NetHub.Models {
 
-    public class MediaActor
+    public class MovieActor
     {
         public int ActorID { get; set; }
-        public int MediaID { get; set; }
+        public int MovieID { get; set; }
 
         public Actor Actor { get; set; }
-        public Medium Medium { get; set; }
+        public Movie Movie { get; set; }
     }
 }

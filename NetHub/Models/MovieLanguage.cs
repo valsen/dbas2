@@ -1,11 +1,11 @@
 namespace NetHub.Models
 {
-    public class MediaLanguage
+    public class MovieLanguage
     {
-        public int MediaID { get; set; }
+        public int MovieID { get; set; }
         public int LanguageID { get; set; }
 
-        public Medium Medium { get; set; }
+        public Movie Movie { get; set; }
         public Language Language { get; set; } 
     }
 }
