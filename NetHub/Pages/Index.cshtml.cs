@@ -65,6 +65,14 @@ namespace NetHub.Pages
             var series = _context.Series
                 .Include(x => x.Seasons)
                     .ThenInclude(x => x.Episodes)
+                        .ThenInclude(x => x.Medium)
+                            .ThenInclude(x => x.MediaDirectors)
+                                .ThenInclude(x => x.Director)
+                .Include(x => x.Seasons)
+                    .ThenInclude(x => x.Episodes)
+                        .ThenInclude(x => x.Medium)
+                            .ThenInclude(x => x.History)
+                                .ThenInclude(x => x.Customer)    
                 .Include(x => x.Rating)
                 .AsQueryable();
 
@@ -72,20 +80,24 @@ namespace NetHub.Pages
             {
                 var user = _context.Accounts.FirstOrDefault(x => x.ID == userId);
                 movies = movies.Where(x => x.Rating.AgeLimit <= user.Age);
+                series = series.Where(x => x.Rating.AgeLimit <= user.Age);
                 
                 if (history)
                 {
                     movies = movies.Where(m => m.Medium.History.Any(x => x.Customer.ID == userId));
+                    series = series.Where(x => x.Episodes.Any(e => e.Medium.History.Any(h => h.Customer.ID == userId)));
                 }
                 else
                 {
                     movies = movies.Where(m => !m.Medium.History.Any(x => x.Customer.ID == userId));
+                    series = series.Where(x => !x.Episodes.Any(e => e.Medium.History.Any(h => h.Customer.ID == userId)));
                 }
             }
 
             if (!String.IsNullOrEmpty(selectedGenre))
             {
                 movies = movies.Where(m => m.MoviesGenres.Any(x => x.Genre.Name == selectedGenre));
+                series = series.Where(m => m.SeriesGenres.Any(x => x.Genre.Name == selectedGenre));
                     
                 // More like normal SQL
                 // movies = 
@@ -99,11 +111,15 @@ namespace NetHub.Pages
             if (!String.IsNullOrEmpty(searchTitle))
             {
                 movies = movies.Where(x => x.Medium.Title.ToLower().Contains(searchTitle.ToLower()));
+                series = series.Where(x => x.Title.ToLower().Contains(searchTitle.ToLower()));
             }
             if (!String.IsNullOrEmpty(searchActor))
             {
                 movies = movies
                     .Where(m => m.MoviesActors.Any(x => searchActor.ToLower().Contains(x.Actor.FirstName.ToLower()) 
+                                                    || searchActor.ToLower().Contains(x.Actor.LastName.ToLower())));
+                series = series
+                    .Where(m => m.SeriesActors.Any(x => searchActor.ToLower().Contains(x.Actor.FirstName.ToLower()) 
                                                     || searchActor.ToLower().Contains(x.Actor.LastName.ToLower())));
 
                 // More like normal SQL
@@ -119,6 +135,7 @@ namespace NetHub.Pages
             if (selectedYear > 0)
             {
                 movies = movies.Where(x => x.Year == selectedYear);
+                series = series.Where(x => x.Seasons.Any(s => s.Year == selectedYear));
             }
 
             var genres = _context.Genres
