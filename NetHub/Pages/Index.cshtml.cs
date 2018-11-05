@@ -58,6 +58,7 @@ namespace NetHub.Pages
                     .ThenInclude(x => x.Language)
                 .Include(x => x.MoviesProdCompanies)
                     .ThenInclude(x => x.ProdCompany)
+                .Include(x => x.Rating)
                 
                 .OrderBy(x => x.Medium.Title)
                 .AsQueryable();
@@ -146,7 +147,7 @@ namespace NetHub.Pages
 
             Movies = await movies.Select(x => new MoviesVM(x)).ToListAsync();
             Series = await series.Select(x => new SeriesVM(x)).ToListAsync();
-            
+
             Entries = new List<object>();
             foreach (var m in Movies)
             {

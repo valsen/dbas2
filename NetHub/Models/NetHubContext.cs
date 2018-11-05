@@ -55,7 +55,7 @@ namespace NetHub.Models
                 .HasKey(a => new { a.SeriesID, a.ActorID });
 
             modelBuilder.Entity<MediaDirector>()
-                .HasKey(d => new { d.MediaID, d.DirectorID });
+                .HasKey(d => new { d.MediumID, d.DirectorID });
 
             modelBuilder.Entity<MovieLanguage>()
                 .HasKey(l => new { l.MovieID, l.LanguageID });
