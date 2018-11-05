@@ -6,7 +6,6 @@ namespace NetHub.Models
     {
         public int ID { get; set; }
         public string Title { get; set; }
-        public int Year { get; set; }
         public string Description { get; set; }
         public string ImgPath { get; set; }
         public int RatingID { get; set; }

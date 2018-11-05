@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NetHub.Models.ViewModels
 {
@@ -20,7 +21,7 @@ namespace NetHub.Models.ViewModels
         public SeriesVM(Series series)
         {
             Title = series.Title;
-            Year = series.Year;
+            Year = getYear(series);
             Description = series.Description;
             ImgPath = series.ImgPath;
             Genre = getGenreString(series);
@@ -86,6 +87,11 @@ namespace NetHub.Models.ViewModels
                 }
             }
             ActorString = actors.ToString();
+        }
+
+        private int getYear(Series s)
+        {
+            return s.Seasons.Min(x => x.Year);
         }
     }
 }

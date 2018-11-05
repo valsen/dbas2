@@ -2,6 +2,7 @@
 @model IndexModel
 @using System.Text
 @using System.Collections.Generic
+@using NetHub.Models.ViewModels
 @{
     ViewData["Title"] = "Search page";
 }
@@ -51,16 +52,26 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Movies) {
+            @foreach (var item in Model.Entries) {
                 <tr>
                     <td>
                         <img src=@item.ImgPath alt="" height="250px">
                     </td>
                     <td style="height:100%;">
                         <div style="position:relative;height:100%;">
-                            <h4>@item.Title</h4>
+                            @if(item is SeriesVM)
+                            {
+                                <h4>@item.Title (@item.Year)</h4>
+                            }
+                            else
+                            {
+                                <h4>@item.Title</h4>
+                            }
                             <p style="max-width: 500px;">@item.Description</p>
-                            <p style="max-width: 500px;"><b>Directors:</b> @item.DirectorString</p>
+                            @if(item is MoviesVM)
+                            {
+                                <p style="max-width: 500px;"><b>Directors:</b> @item.DirectorString</p>
+                            }
                             <p style="max-width: 500px;"><b>Stars:</b>
                             @{
                                 int numActors = item.Actors.Count;
@@ -72,22 +83,29 @@
                                 <a href="?SearchTitle=&SelectedGenre=&SearchActor=@actor&SelectedYear=&UserId=&History=">@actor</a>@if(numActors > 0){@comma}
                             }
                             </p>
-                            @{
-                                if (item.History != null)
+                            @if (item is MoviesVM && item.History != null)
+                            {
+                                @foreach (var mh in item.History)
                                 {
-                                    foreach (var mh in item.History)
+                                    @if (mh.AccountID == Model.SelectedUser)
                                     {
-                                        if (mh.AccountID == Model.SelectedUser)
-                                        {
-                                            <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating</p>
+                                        <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating</p>
 
-                                        }
                                     }
                                 }
                             }
-                            <p style="position:absolute; bottom:10px;"><a href="?SearchTitle=&SelectedGenre=&SearchActor=&SelectedYear=@item.Year&UserId=&History=">@item.Year</a>
-                            &emsp;|&emsp;@item.Genre&emsp;|&emsp;@item.Runtime&emsp;|&emsp;@item.LanguageString&emsp;|&emsp;@item.Rating
-                            </p>
+                            @if (item is MoviesVM)
+                            {
+                                <p style="position:absolute; bottom:10px;"><a href="?SearchTitle=&SelectedGenre=&SearchActor=&SelectedYear=@item.Year&UserId=&History=">@item.Year</a>
+                                    &emsp;|&emsp;@item.Genre&emsp;|&emsp;@item.Runtime&emsp;|&emsp;@item.LanguageString&emsp;|&emsp;@item.Rating
+                                </p>
+                            } 
+                            else 
+                            {
+                                <p style="position:absolute; bottom:10px;"><a href="?SearchTitle=&SelectedGenre=&SearchActor=&SelectedYear=@item.Year&UserId=&History=">@item.Year</a>
+                                    &emsp;|&emsp;@item.Genre&emsp;|&emsp;@item.LanguageString&emsp;|&emsp;@item.Rating
+                                </p> 
+                            }
                         </div>
                     </td>
                 </tr>

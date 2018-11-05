@@ -56,6 +56,37 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
+            var series = new Series[]
+            {
+                new Series
+                {
+                    Title="Better Call Sall",
+                    Description="The trials and tribulations of criminal lawyer, Jimmy McGill, in the time leading up to establishing his strip-mall law office in Albuquerque, New Mexico.",
+                    RatingID=10,
+                    ImgPath="images/bettercallsaul.jpg",
+                }
+            };
+            foreach (var s in series)
+            {
+                context.Series.Add(s);
+            }
+            context.SaveChanges();
+
+            var seasons = new Season[]
+            {
+                new Season
+                {
+                    SeriesID=1,
+                    SeasonNum=1,
+                    Year=2015
+                }
+            };
+            foreach (var s in seasons)
+            {
+                context.Seasons.Add(s);
+            }
+            context.SaveChanges();
+
             var media = new Medium[]
             {
                 new Medium
@@ -69,11 +100,17 @@ namespace NetHub.Models
                     Title="Harry Potter and the Chamber of Secrets",
                     Description="An ancient prophecy seems to be coming true when a mysterious presence begins stalking the corridors of a school of magic and leaving its victims paralyzed.",
                     Runtime=161,
-                }
+                },
+                new Medium
+                {
+                    Title="12 Years a Slave",
+                    Description="In the antebellum United States, Solomon Northup, a free black man from upstate New York, is abducted and sold into slavery.",
+                    Runtime=134,
+                },
             };
             foreach (var m in media)
             {
-                context.Add(m);
+                context.Media.Add(m);
             }
             context.SaveChanges();
 
@@ -92,6 +129,13 @@ namespace NetHub.Models
                     Year=2002,
                     ImgPath="images/harrypotterandthechamberofsecrets.jpg",
                     RatingID=2
+                },
+                new Movie
+                {
+                    MovieID=3,
+                    Year=2013,
+                    ImgPath="images/12yearsaslave.jpg",
+                    RatingID=4
                 }
             };
             foreach (Movie m in movies)
@@ -107,6 +151,9 @@ namespace NetHub.Models
                 new MovieGenre{GenreID=2,MovieID=2},
                 new MovieGenre{GenreID=8,MovieID=2},
                 new MovieGenre{GenreID=9,MovieID=2},
+                new MovieGenre{GenreID=4,MovieID=3},
+                new MovieGenre{GenreID=10,MovieID=3},
+                new MovieGenre{GenreID=11,MovieID=3},
             };
             foreach (MovieGenre g in moviesGenres)
             {
@@ -118,7 +165,7 @@ namespace NetHub.Models
             {
                 new ProdCompany{Name="Warner Bros."},
                 new ProdCompany{Name="Regency Enterprises"},
-                new ProdCompany{Name="River Road Entertainment"}
+                new ProdCompany{Name="River Road Entertainment"},
             };
             foreach (ProdCompany p in prodCompanies)
             {
@@ -129,7 +176,9 @@ namespace NetHub.Models
             var moviesProdcompanies = new MovieProdcompany[]
             {
                 new MovieProdcompany{ProdCompanyID=1,MovieID=1},
-                new MovieProdcompany{ProdCompanyID=1,MovieID=2}
+                new MovieProdcompany{ProdCompanyID=1,MovieID=2},
+                new MovieProdcompany{ProdCompanyID=2,MovieID=3},
+                new MovieProdcompany{ProdCompanyID=3,MovieID=3},
             };
             foreach (MovieProdcompany p in moviesProdcompanies)
             {
@@ -157,7 +206,9 @@ namespace NetHub.Models
                 new MovieActor{ActorID=1,MovieID=1},
                 new MovieActor{ActorID=2,MovieID=2},
                 new MovieActor{ActorID=3,MovieID=2},
-                new MovieActor{ActorID=4,MovieID=2}
+                new MovieActor{ActorID=4,MovieID=2},
+                new MovieActor{ActorID=5,MovieID=3},
+                new MovieActor{ActorID=6,MovieID=3},
             };
             foreach (MovieActor a in moviesActors)
             {
@@ -183,6 +234,7 @@ namespace NetHub.Models
                 new MediaDirector{DirectorID=1,MediumID=1},
                 new MediaDirector{DirectorID=2,MediumID=1},
                 new MediaDirector{DirectorID=4,MediumID=2},
+                new MediaDirector{DirectorID=3,MediumID=3},
             };
             foreach (MediaDirector d in mediaDirectors)
             {
@@ -210,6 +262,7 @@ namespace NetHub.Models
             {
                 new MovieLanguage{MovieID=1,LanguageID=1},
                 new MovieLanguage{MovieID=2,LanguageID=1},
+                new MovieLanguage{MovieID=3,LanguageID=1},
             };
             foreach (MovieLanguage ml in moviesLanguages)
             {
@@ -232,6 +285,7 @@ namespace NetHub.Models
             {
                 new History{AccountID=1,MediumID=1,Date=DateTime.Now.Date,Rating=4},
                 new History{AccountID=2,MediumID=2,Date=DateTime.Now.Date,Rating=4},
+                new History{AccountID=1,MediumID=3,Date=DateTime.Now.Date,Rating=5},
             };
             foreach (History mh in mediaHistory)
             {

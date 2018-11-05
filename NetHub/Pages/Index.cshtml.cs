@@ -60,13 +60,12 @@ namespace NetHub.Pages
                     .ThenInclude(x => x.ProdCompany)
                 .Include(x => x.Rating)
                 
-                .OrderBy(x => x.Medium.Title)
                 .AsQueryable();
 
             var series = _context.Series
                 .Include(x => x.Seasons)
                     .ThenInclude(x => x.Episodes)
-                .OrderBy(x => x.Title)
+                .Include(x => x.Rating)
                 .AsQueryable();
 
             if (userId != 0)
@@ -148,16 +147,16 @@ namespace NetHub.Pages
             Movies = await movies.Select(x => new MoviesVM(x)).ToListAsync();
             Series = await series.Select(x => new SeriesVM(x)).ToListAsync();
 
-            Entries = new List<object>();
+            var entries = new List<dynamic>();
             foreach (var m in Movies)
             {
-                Entries.Add(m);
+                entries.Add(m);
             }
             foreach (var s in Series)
             {
-                Entries.Add(s);
+                entries.Add(s);
             }
-            Entries.OrderBy(x => x.Title);
+            Entries = entries.OrderBy(x => x.Title).ToList();
 
             Genres = new SelectList(await genres.ToListAsync());
             Years = new SelectList(years);
