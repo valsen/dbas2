@@ -26,6 +26,7 @@ namespace NetHub.Pages
         public List<SelectListItem> SelectView { get; set; }
         public SelectList Genres { get; set; }
         public SelectList Years { get; set; }
+        public Account CurrentUser { get; set; }
         public int UserId { get; set; }
         public bool History { get; set; }
         public string SearchTitle { get; set; }
@@ -33,6 +34,8 @@ namespace NetHub.Pages
         public string SearchActor { get; set; }
         public int SelectedYear { get; set; }
         public int SelectedUser { get; set; }
+        public int NewRating { get; set; }
+        public int AgeLimit { get; set; }
 
         // Konstruktor
         public IndexModel(NetHubContext context)
@@ -90,7 +93,7 @@ namespace NetHub.Pages
                 else
                 {
                     movies = movies.Where(m => !m.Medium.History.Any(x => x.Customer.ID == userId));
-                    series = series.Where(x => !x.Episodes.Any(e => e.Medium.History.Any(h => h.Customer.ID == userId)));
+                    series = series.Where(x => x.Episodes.Any(e => !e.Medium.History.Any(h => h.AccountID == userId)));
                 }
             }
 
@@ -142,8 +145,6 @@ namespace NetHub.Pages
                 .OrderBy(g => g.Name)
                 .Select(g => g.Name);
 
-            var users = _context.Accounts
-                .Select(u => u.CustName);
             
 
             int[] years = Enumerable
@@ -157,9 +158,11 @@ namespace NetHub.Pages
                 new SelectListItem{Text="Watched",Value="true"}
             };
 
+            var users = _context.Accounts;
 
             UserId = userId;
-            Users = await _context.Accounts.ToListAsync();
+            Users = await users.ToListAsync();
+            CurrentUser = users.FirstOrDefault(x => x.ID == userId);
 
             Movies = await movies.Select(x => new MoviesVM(x)).ToListAsync();
             Series = await series.Select(x => new SeriesVM(x)).ToListAsync();
@@ -185,6 +188,19 @@ namespace NetHub.Pages
             SelectedYear = selectedYear;
             History = history;
             SelectedUser = userId;
+        }
+
+        public async Task OnPostRateAsync(int userId, int mediumId, int newRating)
+        {
+            var history = _context.History.First(x => x.AccountID == userId && x.MediumID == mediumId);
+            history.Rating = newRating;
+            _context.Update(history);
+            NewRating = newRating;
+            await _context.SaveChangesAsync();
+
+            UserId = userId;
+
+            await OnGetAsync(SearchTitle, SelectedGenre, SearchActor, SelectedYear, UserId, true);
         }
     }
 }

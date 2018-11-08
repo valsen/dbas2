@@ -107,10 +107,31 @@ namespace NetHub.Models
                     Description="In the antebellum United States, Solomon Northup, a free black man from upstate New York, is abducted and sold into slavery.",
                     Runtime=134,
                 },
+                new Medium
+                {
+                    Title="Uno",
+                    Description="Struggling public defender Jimmy McGill constructs an elaborate yet questionable plan for winning back a pair of wealthy, potential clients.",
+                    Runtime=54,
+                }
             };
             foreach (var m in media)
             {
                 context.Media.Add(m);
+            }
+            context.SaveChanges();
+
+            var episodes = new Episode[]
+            {
+                new Episode
+                {
+                    EpisodeID=4, // = MediumID
+                    SeasonID=1,
+                    EpisodeNum=1
+                }
+            };
+            foreach (var e in episodes)
+            {
+                context.Episodes.Add(e);
             }
             context.SaveChanges();
 

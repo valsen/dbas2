@@ -1,4 +1,4 @@
-@page
+@page "{handler?}"
 @model IndexModel
 @using System.Text
 @using System.Collections.Generic
@@ -41,6 +41,15 @@
         }
         <button class="btn btn-primary" type="submit" value="Filter">Search</button>
     </form>
+    <!-- @if (Model.CurrentUser?.Age >= 18)
+    {
+        <form class="form-inline" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="age limit" name="AgeLimit">
+            </div>
+            <button class="btn btn-primary" type="submit">Apply parental control</button>
+        </form>
+    } -->
     <table class="table table-striped table-hover" style="height: 100%;">
         <thead>
             <tr>
@@ -55,7 +64,7 @@
             @foreach (var item in Model.Entries) {
                 <tr>
                     <td>
-                        <img src=@item.ImgPath alt="" height="250px">
+                        <img src=@item.ImgPath alt="" height="300px">
                     </td>
                     <td style="height:100%;">
                         <div style="position:relative;height:100%;">
@@ -89,8 +98,16 @@
                                 {
                                     @if (mh.AccountID == Model.SelectedUser)
                                     {
-                                        <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating</p>
-
+                                        <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating / 10</p>
+                                        <p><form class="form-inline" asp-page-handler="Rate" method="post">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="update rating" name="newRating">
+                                                </div>
+                                                <input type="hidden" name="userId" value="@Model.SelectedUser" />
+                                                <input type="hidden" name="mediumId" value="@mh.MediumID" />
+                                                <button class="btn btn-primary" type="submit">rate</button>
+                                            </form>
+                                        </p>
                                     }
                                 }
                             }
