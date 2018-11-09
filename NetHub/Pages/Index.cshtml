@@ -3,6 +3,7 @@
 @using System.Text
 @using System.Collections.Generic
 @using NetHub.Models.ViewModels
+@using System.Linq
 @{
     ViewData["Title"] = "Search page";
 }
@@ -61,91 +62,177 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Entries) {
-                <tr>
-                    <td>
-                        <img src=@item.ImgPath alt="" height="300px">
-                    </td>
-                    <td style="height:100%;">
-                        <div style="position:relative;height:100%;">
-                            @if(item is SeriesVM)
-                            {
-                                <h4>@item.Title (@item.Year)</h4>
-                            }
-                            else
-                            {
+            
+            @if (Model.History == true)
+            {
+                foreach (var item in Model.Movies) 
+                {
+                    <tr>
+                        <td>
+                            <img src=@item.ImgPath alt="" height="300px">
+                        </td>
+                        <td style="height:100%;">
+                            <div style="position:relative;height:100%;">
                                 <h4>@item.Title</h4>
-                            }
-                            <p style="max-width: 500px;">@item.Description</p>
-                            @if(item is MoviesVM)
-                            {
+                                <p style="max-width: 500px;">@item.Description</p>
                                 <p style="max-width: 500px;"><b>Directors:</b> @item.DirectorString</p>
-                            }
-                            <p style="max-width: 500px;"><b>Stars:</b>
-                            @{
-                                int numActors = item.Actors.Count;
-                                string comma = ",";
-                            } 
-                            @foreach(var a in item.Actors){
-                                numActors--;
-                                var actor = a.FirstName + " " + a.LastName;
-                                <a href="?SearchTitle=&SelectedGenre=&SearchActor=@actor&SelectedYear=&UserId=&History=">@actor</a>@if(numActors > 0){@comma}
-                            }
-                            </p>
-                            @if (item is MoviesVM && item.History != null)
-                            {
-                                @foreach (var mh in item.History)
+                                <p style="max-width: 500px;"><b>Stars:</b>
+                                @{
+                                    int numActors = item.Actors.Count;
+                                    string comma = ",";
+                                } 
+                                @foreach(var a in item.Actors){
+                                    numActors--;
+                                    var actor = a.FirstName + " " + a.LastName;
+                                    <a href="?SearchTitle=&SelectedGenre=&SearchActor=@actor&SelectedYear=&UserId=&History=">@actor</a>@if(numActors > 0){@comma}
+                                }
+                                </p>
+                                @if (item.History != null)
                                 {
-                                    @if (mh.AccountID == Model.SelectedUser)
+                                    @foreach (var mh in item.History)
                                     {
-                                        <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating / 10</p>
-                                        <p><form class="form-inline" asp-page-handler="Rate" method="post">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="update rating" name="newRating">
-                                                </div>
-                                                <input type="hidden" name="userId" value="@Model.SelectedUser" />
-                                                <input type="hidden" name="mediumId" value="@mh.MediumID" />
-                                                <button class="btn btn-primary" type="submit">rate</button>
-                                            </form>
-                                        </p>
+                                        @if (mh.AccountID == Model.SelectedUser)
+                                        {
+                                            <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating / 10</p>
+                                            <p><form class="form-inline" asp-page-handler="Rate" method="post">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="update rating" name="newRating">
+                                                    </div>
+                                                    <input type="hidden" name="userId" value="@Model.SelectedUser" />
+                                                    <input type="hidden" name="mediumId" value="@mh.MediumID" />
+                                                    <button class="btn btn-primary" type="submit">rate</button>
+                                                </form>
+                                            </p>
+                                        }
                                     }
                                 }
-                            }
-                            @if (item is SeriesVM && item.History != null)
-                            {
-                                @foreach (var sh in item.History)
-                                {
-                                    @if (sh.AccountID == Model.SelectedUser)
-                                    {
-                                        <p style="max-width: 500px;"><b>My rating: </b>@sh.Rating / 10</p>
-                                        <p><form class="form-inline" asp-page-handler="Rate" method="post">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="update rating" name="newRating">
-                                                </div>
-                                                <input type="hidden" name="userId" value="@Model.SelectedUser" />
-                                                <input type="hidden" name="mediumId" value="@sh.MediumID" />
-                                                <button class="btn btn-primary" type="submit">rate</button>
-                                            </form>
-                                        </p>
-                                    }
-                                }
-                            }
-                            @if (item is MoviesVM)
-                            {
                                 <p style="position:absolute; bottom:10px;"><a href="?SearchTitle=&SelectedGenre=&SearchActor=&SelectedYear=@item.Year&UserId=&History=">@item.Year</a>
                                     &emsp;|&emsp;@item.Genre&emsp;|&emsp;@item.Runtime&emsp;|&emsp;@item.LanguageString&emsp;|&emsp;@item.Rating
                                 </p>
-                            } 
-                            else 
+                            </div>
+                        </td>
+                    </tr>
+                }
+                foreach (var item in Model.Series)
+                {
+                    foreach (var ep in item.Episodes)
+                    {
+                        if (ep.Medium.History != null)
+                        {
+                            foreach (var mh in ep.Medium.History)
                             {
-                                <p style="position:absolute; bottom:10px;"><a href="?SearchTitle=&SelectedGenre=&SearchActor=&SelectedYear=@item.Year&UserId=&History=">@item.Year</a>
-                                    &emsp;|&emsp;@item.Genre&emsp;|&emsp;@item.LanguageString&emsp;|&emsp;@item.Rating
-                                </p> 
+                                if (mh.AccountID == Model.SelectedUser)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src=@item.ImgPath alt="" height="300px">
+                                        </td>
+                                        <td style="height:100%;">
+                                            <div style="position:relative;height:100%;">
+                                                <h4>@item.Title</h4>
+                                                <h5>Episode @ep.EpisodeNum: @ep.Medium.Title</h5>
+                                                <p style="max-width: 500px;">@item.Description</p>
+                                                <p style="max-width: 500px;"><b>Directors:</b> @item.DirectorString</p>
+                                                <p style="max-width: 500px;"><b>Stars:</b>
+                                                @{
+                                                    int numActors = item.Actors.Count;
+                                                    string comma = ",";
+                                                } 
+                                                @foreach(var a in item.Actors){
+                                                    numActors--;
+                                                    var actor = a.FirstName + " " + a.LastName;
+                                                    <a href="?SearchTitle=&SelectedGenre=&SearchActor=@actor&SelectedYear=&UserId=&History=">@actor</a>@if(numActors > 0){@comma}
+                                                }
+                                                </p>
+                                                <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating / 10</p>
+                                                <p><form class="form-inline" asp-page-handler="Rate" method="post">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" placeholder="update rating" name="newRating">
+                                                        </div>
+                                                        <input type="hidden" name="userId" value="@Model.SelectedUser" />
+                                                        <input type="hidden" name="mediumId" value="@mh.MediumID" />
+                                                        <button class="btn btn-primary" type="submit">rate</button>
+                                                    </form>
+                                                </p>
+                                                <p style="position:absolute; bottom:10px;"><a href="?SearchTitle=&SelectedGenre=&SearchActor=&SelectedYear=@item.Year&UserId=&History=">@item.Year</a>
+                                                    &emsp;|&emsp;@item.Genre&emsp;|&emsp;@ep.Medium.Runtime&emsp;|&emsp;@item.LanguageString&emsp;|&emsp;@item.Rating
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        </div>
-                    </td>
-                </tr>
+                        }
+                    }
+                }
             }
+            else
+            {
+                foreach (var item in Model.Movies) 
+                {
+                    <tr>
+                        <td>
+                            <img src=@item.ImgPath alt="" height="300px">
+                        </td>
+                        <td style="height:100%;">
+                            <div style="position:relative;height:100%;">
+                                <h4>@item.Title</h4>
+                                <p style="max-width: 500px;">@item.Description</p>
+                                <p style="max-width: 500px;"><b>Directors:</b> @item.DirectorString</p>
+                                <p style="max-width: 500px;"><b>Stars:</b>
+                                @{
+                                    int numActors = item.Actors.Count;
+                                    string comma = ",";
+                                } 
+                                @foreach(var a in item.Actors){
+                                    numActors--;
+                                    var actor = a.FirstName + " " + a.LastName;
+                                    <a href="?SearchTitle=&SelectedGenre=&SearchActor=@actor&SelectedYear=&UserId=&History=">@actor</a>@if(numActors > 0){@comma}
+                                }
+                                </p>
+                                <p style="position:absolute; bottom:10px;"><a href="?SearchTitle=&SelectedGenre=&SearchActor=&SelectedYear=@item.Year&UserId=&History=">@item.Year</a>
+                                    &emsp;|&emsp;@item.Genre&emsp;|&emsp;@item.Runtime&emsp;|&emsp;@item.LanguageString&emsp;|&emsp;@item.Rating
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                foreach (var item in Model.Series)
+                {
+                    if (Model.Series.Any(x => x.Episodes.Any(e => !e.Medium.History.Any(h => h.AccountID == Model.SelectedUser))))
+                    {
+                        <tr>
+                            <td>
+                                <img src=@item.ImgPath alt="" height="300px">
+                            </td>
+                            <td style="height:100%;">
+                                <div style="position:relative;height:100%;">
+                                    <h4>@item.Title</h4>
+                                    <p style="max-width: 500px;">@item.Description</p>
+                                    <h5>Next episode: @item.Episodes.Where(e => !e.Medium.History.Any(h => h.AccountID == Model.SelectedUser)).Aggregate((curMin, x) => (x.EpisodeNum < curMin.EpisodeNum ? x : curMin)).Medium.Title</h5>
+                                    <p style="max-width: 500px;"><b>Directors:</b> @item.DirectorString</p>
+                                    <p style="max-width: 500px;"><b>Stars:</b>
+                                    @{
+                                        int numActors = item.Actors.Count;
+                                        string comma = ",";
+                                    } 
+                                    @foreach(var a in item.Actors){
+                                        numActors--;
+                                        var actor = a.FirstName + " " + a.LastName;
+                                        <a href="?SearchTitle=&SelectedGenre=&SearchActor=@actor&SelectedYear=&UserId=&History=">@actor</a>@if(numActors > 0){@comma}
+                                    }
+                                    </p>
+                                    
+                                    <p style="position:absolute; bottom:10px;"><a href="?SearchTitle=&SelectedGenre=&SearchActor=&SelectedYear=@item.Year&UserId=&History=">@item.Year</a>
+                                        &emsp;|&emsp;@item.Genre&emsp;|&emsp;@item.LanguageString&emsp;|&emsp;@item.Rating
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+            
         </tbody>
     </table>
 

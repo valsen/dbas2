@@ -41,6 +41,7 @@ namespace NetHub.Pages
         public IndexModel(NetHubContext context)
         {
             _context = context;
+            History = false;
         }
         public async Task OnGetAsync(string searchTitle, string selectedGenre, string searchActor, int selectedYear, int userId, bool history)
         {
