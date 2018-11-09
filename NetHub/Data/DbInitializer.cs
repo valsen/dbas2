@@ -60,7 +60,7 @@ namespace NetHub.Models
             {
                 new Series
                 {
-                    Title="Better Call Sall",
+                    Title="Better Call Saul",
                     Description="The trials and tribulations of criminal lawyer, Jimmy McGill, in the time leading up to establishing his strip-mall law office in Albuquerque, New Mexico.",
                     RatingID=10,
                     ImgPath="images/bettercallsaul.jpg",
@@ -112,6 +112,12 @@ namespace NetHub.Models
                     Title="Uno",
                     Description="Struggling public defender Jimmy McGill constructs an elaborate yet questionable plan for winning back a pair of wealthy, potential clients.",
                     Runtime=54,
+                },
+                new Medium
+                {
+                    Title="Mijo",
+                    Description="Better call saul S01E02",
+                    Runtime=46
                 }
             };
             foreach (var m in media)
@@ -127,6 +133,12 @@ namespace NetHub.Models
                     EpisodeID=4, // = MediumID
                     SeasonID=1,
                     EpisodeNum=1
+                },
+                new Episode
+                {
+                    EpisodeID=5, // = MediumID
+                    SeasonID=1,
+                    EpisodeNum=2
                 }
             };
             foreach (var e in episodes)
