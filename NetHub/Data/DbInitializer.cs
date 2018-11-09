@@ -30,6 +30,7 @@ namespace NetHub.Models
                 new Genre{Name="Family"},
                 new Genre{Name="Biography"},
                 new Genre{Name="History"},
+                new Genre{Name="Crime"},
             };
             foreach (Genre g in genres)
             {
@@ -64,11 +65,29 @@ namespace NetHub.Models
                     Description="The trials and tribulations of criminal lawyer, Jimmy McGill, in the time leading up to establishing his strip-mall law office in Albuquerque, New Mexico.",
                     RatingID=10,
                     ImgPath="images/bettercallsaul.jpg",
+                },
+                new Series
+                {
+                    Title="Breaking Bad",
+                    Description="A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine in order to secure his familys future.",
+                    RatingID=10,
+                    ImgPath="images/breakingbad.jpg",
                 }
             };
             foreach (var s in series)
             {
                 context.Series.Add(s);
+            }
+            context.SaveChanges();
+
+            var seriesGenres = new SeriesGenre[]
+            {
+                new SeriesGenre{SeriesID=1,GenreID=12},
+                new SeriesGenre{SeriesID=1,GenreID=4},
+            };
+            foreach (SeriesGenre sg in seriesGenres)
+            {
+                context.SeriesGenres.Add(sg);
             }
             context.SaveChanges();
 
@@ -79,6 +98,12 @@ namespace NetHub.Models
                     SeriesID=1,
                     SeasonNum=1,
                     Year=2015
+                },
+                new Season
+                {
+                    SeriesID=2,
+                    SeasonNum=1,
+                    Year=2008
                 }
             };
             foreach (var s in seasons)
@@ -118,6 +143,30 @@ namespace NetHub.Models
                     Title="Mijo",
                     Description="Better call saul S01E02",
                     Runtime=46
+                },
+                new Medium
+                {
+                    Title="Nacho",
+                    Description="Better call saul S01E03",
+                    Runtime=47
+                },
+                new Medium
+                {
+                    Title="Hero",
+                    Description="Better call saul S01E04",
+                    Runtime=47
+                },
+                new Medium
+                {
+                    Title="Pilot",
+                    Description="Breaking Bad S01E01",
+                    Runtime=58
+                },
+                new Medium
+                {
+                    Title="Cats in the Bag...",
+                    Description="Breaking Bad S01E02",
+                    Runtime=48
                 }
             };
             foreach (var m in media)
@@ -138,6 +187,30 @@ namespace NetHub.Models
                 {
                     EpisodeID=5, // = MediumID
                     SeasonID=1,
+                    EpisodeNum=2
+                },
+                new Episode
+                {
+                    EpisodeID=6, // = MediumID
+                    SeasonID=1,
+                    EpisodeNum=3
+                },
+                new Episode
+                {
+                    EpisodeID=7, // = MediumID
+                    SeasonID=1,
+                    EpisodeNum=4
+                },
+                new Episode
+                {
+                    EpisodeID=8, // = MediumID
+                    SeasonID=2,
+                    EpisodeNum=1
+                },
+                new Episode
+                {
+                    EpisodeID=9, // = MediumID
+                    SeasonID=2,
                     EpisodeNum=2
                 }
             };
@@ -328,7 +401,9 @@ namespace NetHub.Models
             {
                 new History{AccountID=1,MediumID=1,Date=DateTime.Now.Date,Rating=4},
                 new History{AccountID=2,MediumID=2,Date=DateTime.Now.Date,Rating=4},
-                new History{AccountID=1,MediumID=3,Date=DateTime.Now.Date,Rating=5},
+                new History{AccountID=1,MediumID=3,Date=DateTime.Now.Date,Rating=3},
+                new History{AccountID=1,MediumID=4,Date=DateTime.Now.Date,Rating=5},
+                new History{AccountID=1,MediumID=5,Date=DateTime.Now.Date,Rating=4},
             };
             foreach (History mh in mediaHistory)
             {

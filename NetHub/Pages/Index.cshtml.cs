@@ -82,6 +82,10 @@ namespace NetHub.Pages
                             .ThenInclude(x => x.History)
                                 .ThenInclude(x => x.Customer)    
                 .Include(x => x.Rating)
+                .Include(x => x.SeriesGenres)
+                    .ThenInclude(x => x.Genre)
+                .Include(x => x.SeriesLanguages)
+                    .ThenInclude(x => x.Language)
                 .AsQueryable();
 
             if (userId != 0)
