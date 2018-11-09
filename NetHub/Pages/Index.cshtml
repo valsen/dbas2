@@ -93,7 +93,7 @@
                                     {
                                         @if (mh.AccountID == Model.SelectedUser)
                                         {
-                                            <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating / 10</p>
+                                            <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating / 5</p>
                                             <p><form class="form-inline" asp-page-handler="Rate" method="post">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" placeholder="update rating" name="newRating">
@@ -144,7 +144,7 @@
                                                     <a href="?SearchTitle=&SelectedGenre=&SearchActor=@actor&SelectedYear=&UserId=&History=">@actor</a>@if(numActors > 0){@comma}
                                                 }
                                                 </p>
-                                                <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating / 10</p>
+                                                <p style="max-width: 500px;"><b>My rating: </b>@mh.Rating / 5</p>
                                                 <p><form class="form-inline" asp-page-handler="Rate" method="post">
                                                         <div class="form-group">
                                                             <input type="text" class="form-control" placeholder="update rating" name="newRating">
@@ -155,7 +155,7 @@
                                                     </form>
                                                 </p>
                                                 <p style="position:absolute; bottom:10px;"><a href="?SearchTitle=&SelectedGenre=&SearchActor=&SelectedYear=@item.Year&UserId=&History=">@item.Year</a>
-                                                    &emsp;|&emsp;@item.Genre&emsp;|&emsp;@ep.Medium.Runtime&emsp;|&emsp;@item.LanguageString&emsp;|&emsp;@item.Rating
+                                                    &emsp;|&emsp;@item.Genre&emsp;|&emsp;@ep.Medium.Runtime min&emsp;|&emsp;@item.LanguageString&emsp;|&emsp;@item.Rating
                                                 </p>
                                             </div>
                                         </td>
