@@ -14,6 +14,7 @@ namespace NetHub.Models
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Actor> Actors { get; set; }
+        public DbSet<AgeFilter> AgeFilters { get; set; }
         public DbSet<Director> Directors { get; set; }
         public DbSet<Episode> Episodes { get; set; }
         public DbSet<Genre> Genres { get; set; }

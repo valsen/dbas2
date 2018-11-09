@@ -302,6 +302,16 @@ namespace NetHub.Models
             }
             context.SaveChanges();
 
+            var ageFilters = new AgeFilter[]
+            {
+                new AgeFilter{ID=2,AgeLimit=15}
+            };
+            foreach (AgeFilter f in ageFilters)
+            {
+                context.Add(f);
+            }
+            context.SaveChanges();
+
             var mediaHistory = new History[]
             {
                 new History{AccountID=1,MediumID=1,Date=DateTime.Now.Date,Rating=4},

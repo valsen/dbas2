@@ -18,6 +18,8 @@ namespace NetHub.Models.ViewModels
         public string ActorString { get; set; }
         public string DirectorString { get; set; }
         public Boolean Complete { get; set; }
+        public List<History> History { get; set; }
+        
         public SeriesVM(Series series)
         {
             Title = series.Title;
@@ -28,6 +30,7 @@ namespace NetHub.Models.ViewModels
             Rating = series.Rating.Name;
             Actors = new List<Actor>();
             getActors(series);
+            History = getHistory(series);
             LanguageString = getLanguageString(series);
         }
 
@@ -92,6 +95,32 @@ namespace NetHub.Models.ViewModels
         private int getYear(Series s)
         {
             return s.Seasons.Min(x => x.Year);
+        }
+
+        private List<History> getHistory(Series s)
+        {
+            var History = new List<History>();
+            if (s.Seasons != null)
+            {
+                foreach (var season in s.Seasons)
+                {
+                    if (season.Episodes != null)
+                    {
+                        foreach (var episode in season.Episodes)
+                        {
+                            if (episode.Medium.History != null)
+                            {
+                                foreach (var h in episode.Medium.History)
+                                {
+                                    History.Add(h);
+                                }
+                                return History;
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
         }
     }
 }

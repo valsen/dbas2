@@ -111,6 +111,25 @@
                                     }
                                 }
                             }
+                            @if (item is SeriesVM && item.History != null)
+                            {
+                                @foreach (var sh in item.History)
+                                {
+                                    @if (sh.AccountID == Model.SelectedUser)
+                                    {
+                                        <p style="max-width: 500px;"><b>My rating: </b>@sh.Rating / 10</p>
+                                        <p><form class="form-inline" asp-page-handler="Rate" method="post">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="update rating" name="newRating">
+                                                </div>
+                                                <input type="hidden" name="userId" value="@Model.SelectedUser" />
+                                                <input type="hidden" name="mediumId" value="@sh.MediumID" />
+                                                <button class="btn btn-primary" type="submit">rate</button>
+                                            </form>
+                                        </p>
+                                    }
+                                }
+                            }
                             @if (item is MoviesVM)
                             {
                                 <p style="position:absolute; bottom:10px;"><a href="?SearchTitle=&SelectedGenre=&SearchActor=&SelectedYear=@item.Year&UserId=&History=">@item.Year</a>

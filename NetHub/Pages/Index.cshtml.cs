@@ -69,6 +69,10 @@ namespace NetHub.Pages
                 .Include(x => x.Seasons)
                     .ThenInclude(x => x.Episodes)
                         .ThenInclude(x => x.Medium)
+                            .ThenInclude(x => x.History)
+                .Include(x => x.Seasons)
+                    .ThenInclude(x => x.Episodes)
+                        .ThenInclude(x => x.Medium)
                             .ThenInclude(x => x.MediaDirectors)
                                 .ThenInclude(x => x.Director)
                 .Include(x => x.Seasons)
@@ -81,19 +85,23 @@ namespace NetHub.Pages
 
             if (userId != 0)
             {
-                var user = _context.Accounts.FirstOrDefault(x => x.ID == userId);
-                movies = movies.Where(x => x.Rating.AgeLimit <= user.Age);
-                series = series.Where(x => x.Rating.AgeLimit <= user.Age);
-                
+                var filter = _context.AgeFilters.FirstOrDefault(x => x.ID == userId);
+                if (filter != null)
+                {
+                    int ageLimit = filter.AgeLimit;
+                    movies = movies.Where(x => x.Rating.AgeLimit <= ageLimit);
+                    series = series.Where(x => x.Rating.AgeLimit <= ageLimit);
+                }
+
                 if (history)
                 {
                     movies = movies.Where(m => m.Medium.History.Any(x => x.Customer.ID == userId));
-                    series = series.Where(x => x.Episodes.Any(e => e.Medium.History.Any(h => h.Customer.ID == userId)));
+                    series = series.Where(x => x.Seasons.Any(s => s.Episodes.Any(e => e.Medium.History.Any(h => h.Customer.ID == userId))));
                 }
                 else
                 {
                     movies = movies.Where(m => !m.Medium.History.Any(x => x.Customer.ID == userId));
-                    series = series.Where(x => x.Episodes.Any(e => !e.Medium.History.Any(h => h.AccountID == userId)));
+                    series = series.Where(x => x.Seasons.Any(s => s.Episodes.Any(e => !e.Medium.History.Any(h => h.AccountID == userId))));
                 }
             }
 
